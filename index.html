@@ -6,20 +6,25 @@
     <title>Los Secretos de Egipto - Proyecto Nara</title>
     <style>
         /* --- RESET Y BASE --- */
-        body {
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #f7e6ad; /* Color arena por si falla el fondo */
+            background-color: #f7e6ad;
             font-family: 'Comic Sans MS', 'Verdana', sans-serif;
             touch-action: none;
             user-select: none;
             -webkit-user-select: none;
-            width: 100vw;
-            height: 100vh;
+            -webkit-touch-callout: none;
+            width: 100%;
+            height: 100%;
+            position: fixed;
         }
 
-        /* Imagen de fondo separada para manejar errores */
         #bg-image {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -62,7 +67,6 @@
             justify-content: space-around;
             align-items: flex-end;
             padding-bottom: 20px;
-            box-sizing: border-box;
         }
 
         .character-zone {
@@ -73,7 +77,7 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            border: 2px dashed rgba(0,0,0,0.1); /* Ayuda visual sutil */
+            border: 2px dashed rgba(0,0,0,0.1);
             border-radius: 10px;
         }
 
@@ -86,7 +90,6 @@
             pointer-events: none;
         }
 
-        /* Si la imagen falla, mostramos esto */
         .fallback-box {
             width: 100%; height: 80%;
             background: rgba(255, 255, 255, 0.5);
@@ -94,7 +97,7 @@
             justify-content: center; align-items: center;
             text-align: center; font-weight: bold; color: #555;
             position: absolute; bottom: 40px;
-            display: none; /* Oculto por defecto */
+            display: none;
         }
 
         .label {
@@ -119,24 +122,30 @@
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            position: absolute; bottom: 0; width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
         }
 
         .draggable {
-            width: 18vh; height: 18vh;
+            width: 18vh;
+            height: 18vh;
             cursor: grab;
-            transition: transform 0.1s;
-            touch-action: none;
             object-fit: contain;
+            touch-action: none;
+            -webkit-touch-callout: none;
         }
 
-        /* Estilo activo al arrastrar */
+        /* ========== CLAVE: Estilo del elemento mientras se arrastra ========== */
         .dragging-active {
             position: fixed !important;
             z-index: 9999 !important;
-            width: 22vh !important; height: 22vh !important;
-            transform: translate(-50%, -50%) scale(1.1);
-            pointer-events: none; /* CLAVE: El toque atraviesa la imagen para detectar la zona */
+            width: 20vh !important;
+            height: 20vh !important;
+            pointer-events: none !important;
+            opacity: 0.9;
+            /* La posición se controla con left/top desde JS */
         }
 
         /* Objeto colocado */
@@ -145,46 +154,66 @@
             z-index: 20;
             width: 40%;
             animation: popIn 0.5s ease;
+            pointer-events: none;
         }
         
         #placed-corona { top: 0%; left: 30%; }
         #placed-papiro { top: 50%; left: 10%; }
         #placed-trigo { top: 40%; right: 0%; }
 
-        /* DEBUG CONSOLE (Para ver errores en tablet) */
-        #debug-console {
-            position: fixed; bottom: 0; right: 0; 
-            width: 200px; height: 100px; 
-            background: rgba(0,0,0,0.8); color: lime; 
-            font-size: 10px; overflow-y: scroll; 
-            z-index: 10000; pointer-events: none;
-            display: none; /* Activar si falla algo */
+        @keyframes popIn { 
+            0% { transform: scale(0); } 
+            100% { transform: scale(1); } 
         }
-
-        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
         
         /* Pantalla Victoria */
         #win-screen {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(218, 165, 32, 0.95);
-            z-index: 2000; flex-direction: column;
-            justify-content: center; align-items: center;
+            z-index: 2000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Highlight zona cuando arrastramos encima */
+        .zone-highlight {
+            background: rgba(255, 215, 0, 0.3) !important;
+            border: 3px solid gold !important;
+        }
+
+        /* DEBUG */
+        #debug-console {
+            position: fixed;
+            bottom: 0;
+            right: 0; 
+            width: 250px;
+            height: 120px; 
+            background: rgba(0,0,0,0.85);
+            color: lime; 
+            font-size: 11px;
+            overflow-y: scroll; 
+            z-index: 10000;
+            pointer-events: none;
+            padding: 5px;
+            display: none; /* Cambiar a 'block' para debug */
         }
     </style>
 </head>
 <body>
 
-    <!-- DEBUGGER VISUAL -->
-    <div id="debug-console">Iniciando sistema...<br></div>
+    <div id="debug-console">Sistema iniciando...<br></div>
 
-    <!-- FONDO -->
     <img id="bg-image" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo.png" onerror="this.style.display='none'; log('Error carga fondo');">
 
     <!-- PANTALLA INICIO -->
     <div id="start-screen">
         <h1>🏺 Misión Egipto 🏺</h1>
         <button id="start-btn">¡JUGAR!</button>
-        <p style="font-size: 0.8rem; margin-top:20px; color: #ccc;">V 3.2 - Con Música</p>
+        <p style="font-size: 0.8rem; margin-top:20px; color: #ccc;">V 4.0 - Drag Corregido</p>
     </div>
 
     <!-- PANTALLA VICTORIA -->
@@ -193,10 +222,8 @@
         <button onclick="location.reload()" style="padding: 15px; font-size: 1.5rem; border-radius: 20px;">Jugar otra vez</button>
     </div>
 
-    <!-- AUDIOS (Con preload="auto") -->
-    <!-- MÚSICA DE FONDO (Loop) -->
+    <!-- AUDIOS -->
     <audio id="snd-bgm" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/musica_fondo.m4a" loop preload="auto"></audio>
-
     <audio id="snd-intro" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/intro_egipto.m4a" preload="auto"></audio>
     <audio id="snd-reina" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_cleopatra.m4a" preload="auto"></audio>
     <audio id="snd-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_escriba.m4a" preload="auto"></audio>
@@ -205,21 +232,18 @@
 
     <!-- JUEGO -->
     <div id="game-stage">
-        <!-- Escriba -->
         <div class="character-zone" id="zone-escriba" data-need="papiro">
             <div class="fallback-box">ESCRIBA AQUÍ</div>
             <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" class="char-img" onerror="imgError(this)">
             <div class="label">Escriba</div>
         </div>
 
-        <!-- Cleopatra -->
         <div class="character-zone" id="zone-cleopatra" data-need="corona">
             <div class="fallback-box">CLEOPATRA AQUÍ</div>
             <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" class="char-img" onerror="imgError(this)">
             <div class="label">Faraona</div>
         </div>
 
-        <!-- Campesino -->
         <div class="character-zone" id="zone-campesino" data-need="trigo">
             <div class="fallback-box">CAMPESINO AQUÍ</div>
             <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" class="char-img" onerror="imgError(this)">
@@ -228,225 +252,302 @@
     </div>
 
     <div id="inventory">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/trigo.png" class="draggable" id="trigo" onerror="this.style.backgroundColor='red'">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pizza.png" class="draggable" id="pizza" onerror="this.style.backgroundColor='red'">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/corona.png" class="draggable" id="corona" onerror="this.style.backgroundColor='red'">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pergamino.png" class="draggable" id="papiro" onerror="this.style.backgroundColor='red'">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/trigo.png" class="draggable" id="trigo" data-item="trigo" onerror="this.style.backgroundColor='red'">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pizza.png" class="draggable" id="pizza" data-item="pizza" onerror="this.style.backgroundColor='red'">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/corona.png" class="draggable" id="corona" data-item="corona" onerror="this.style.backgroundColor='red'">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pergamino.png" class="draggable" id="papiro" data-item="papiro" onerror="this.style.backgroundColor='red'">
     </div>
 
     <script>
-        // --- SISTEMA DE LOGS ---
+        // ============ SISTEMA DE LOGS ============
         function log(msg) {
             const consoleDiv = document.getElementById('debug-console');
-            consoleDiv.innerHTML += msg + "<br>";
-            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            if (consoleDiv) {
+                consoleDiv.innerHTML += msg + "<br>";
+                consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            }
             console.log(msg);
         }
 
         window.onerror = function(msg, url, line) {
-            log("ERROR GLOBAL: " + msg);
-            document.getElementById('debug-console').style.display = 'block'; // Mostrar si hay error grave
+            log("ERROR: " + msg + " L:" + line);
+            document.getElementById('debug-console').style.display = 'block';
         };
 
-        // --- MANEJO DE IMÁGENES ROTAS ---
         function imgError(image) {
             image.style.display = "none";
-            // Mostrar la caja de texto detrás
             const fallback = image.parentElement.querySelector('.fallback-box');
-            if(fallback) fallback.style.display = "flex";
-            log("Fallo imagen: " + image.src);
+            if (fallback) fallback.style.display = "flex";
+            log("Fallo imagen: " + image.src.split('/').pop());
         }
 
-        // --- VARIABLES JUEGO ---
+        // ============ VARIABLES DEL JUEGO ============
         let itemsPlaced = 0;
         const totalItems = 3;
-        let activeItem = null;
+        
+        // ===== NUEVO SISTEMA DE DRAG =====
+        let dragState = {
+            active: false,
+            element: null,
+            itemId: null,
+            offsetX: 0,
+            offsetY: 0
+        };
 
-        // --- INICIO ---
-        document.getElementById('start-btn').addEventListener('click', () => {
-            document.getElementById('start-screen').style.display = 'none';
-            log("Iniciando...");
-            
-            // 1. Reproducir Intro
-            playAudio('snd-intro');
-            
-            // 2. Iniciar Música de Fondo (Loop)
-            const bgm = document.getElementById('snd-bgm');
-            if(bgm) {
-                bgm.volume = 0.3; // Volumen suave (30%)
-                bgm.currentTime = 0;
-                bgm.play().catch(e => log("Error BGM: " + e));
-            }
-        });
-
-        // --- DRAG & DROP ROBUSTO ---
-        const draggables = document.querySelectorAll('.draggable');
         const zones = document.querySelectorAll('.character-zone');
 
-        draggables.forEach(item => {
-            // Touch
-            item.addEventListener('touchstart', handleStart, {passive: false});
-            item.addEventListener('touchmove', handleMove, {passive: false});
-            item.addEventListener('touchend', handleEnd);
-            // Mouse
-            item.addEventListener('mousedown', handleStart);
+        // ============ INICIO ============
+        document.getElementById('start-btn').addEventListener('click', () => {
+            document.getElementById('start-screen').style.display = 'none';
+            log("Juego iniciado");
+            
+            playAudio('snd-intro');
+            
+            const bgm = document.getElementById('snd-bgm');
+            if (bgm) {
+                bgm.volume = 0.3;
+                bgm.currentTime = 0;
+                bgm.play().catch(e => log("BGM error: " + e.message));
+            }
         });
 
-        function handleStart(e) {
-            if (e.target.classList.contains('placed-item')) return;
+        // ============ NUEVO DRAG & DROP ============
+        
+        function initDraggables() {
+            document.querySelectorAll('.draggable').forEach(item => {
+                // TOUCH
+                item.addEventListener('touchstart', onDragStart, { passive: false });
+                // MOUSE
+                item.addEventListener('mousedown', onDragStart);
+            });
+            
+            // Eventos globales para move y end
+            document.addEventListener('touchmove', onDragMove, { passive: false });
+            document.addEventListener('touchend', onDragEnd);
+            document.addEventListener('touchcancel', onDragEnd);
+            
+            document.addEventListener('mousemove', onDragMove);
+            document.addEventListener('mouseup', onDragEnd);
+        }
+
+        function onDragStart(e) {
+            const target = e.target;
+            
+            // Ignorar si ya está colocado
+            if (!target.classList.contains('draggable')) return;
+            
             e.preventDefault();
-
-            activeItem = e.target;
+            e.stopPropagation();
             
-            // Truco visual: Ponemos la clase que lo fija a la pantalla
-            activeItem.classList.add('dragging-active');
-            
-            // Movemos inmediatamente
+            // Obtener coordenadas
             const point = e.touches ? e.touches[0] : e;
-            updatePosition(point.clientX, point.clientY);
+            const rect = target.getBoundingClientRect();
             
-            log("Start Drag: " + activeItem.id);
+            // Guardar estado
+            dragState.active = true;
+            dragState.element = target;
+            dragState.itemId = target.id;
+            
+            // ===== CLAVE: Calcular el tamaño del elemento arrastrado =====
+            // Usamos la mitad del tamaño para centrar bajo el dedo
+            const dragSize = Math.min(window.innerHeight * 0.20, 150); // 20vh o max 150px
+            dragState.offsetX = dragSize / 2;
+            dragState.offsetY = dragSize / 2;
+            
+            // Mover al body para position:fixed funcione bien
+            document.body.appendChild(target);
+            
+            // Aplicar clase de arrastre
+            target.classList.add('dragging-active');
+            
+            // Posicionar CENTRADO bajo el dedo
+            updateDragPosition(point.clientX, point.clientY);
+            
+            log("Drag start: " + dragState.itemId);
         }
 
-        function handleMove(e) {
-            if (!activeItem) return;
+        function onDragMove(e) {
+            if (!dragState.active || !dragState.element) return;
+            
             e.preventDefault();
+            
             const point = e.touches ? e.touches[0] : e;
-            updatePosition(point.clientX, point.clientY);
+            updateDragPosition(point.clientX, point.clientY);
+            
+            // Highlight de zona
+            highlightZoneUnderPoint(point.clientX, point.clientY);
         }
 
-        function updatePosition(x, y) {
-            if(activeItem) {
-                activeItem.style.left = x + 'px';
-                activeItem.style.top = y + 'px';
-            }
+        function updateDragPosition(x, y) {
+            if (!dragState.element) return;
+            
+            // ===== CLAVE: Centrar el elemento bajo el dedo =====
+            dragState.element.style.left = (x - dragState.offsetX) + 'px';
+            dragState.element.style.top = (y - dragState.offsetY) + 'px';
         }
 
-        function handleEnd(e) {
-            if (!activeItem) return;
-            
-            // Obtenemos coordenadas finales
-            const point = e.changedTouches ? e.changedTouches[0] : e;
-            const x = point.clientX;
-            const y = point.clientY;
-
-            // Detección manual de colisión (Hit Test)
-            let dropped = false;
-            
-            // Ocultamos el item un momento para ver qué hay debajo (opcional, pero hit test manual es mejor)
-            activeItem.style.display = 'none';
-            
-            // Miramos en cada zona si el dedo cae dentro
+        function highlightZoneUnderPoint(x, y) {
             zones.forEach(zone => {
                 const rect = zone.getBoundingClientRect();
                 if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    checkDrop(zone, activeItem);
-                    dropped = true;
+                    zone.classList.add('zone-highlight');
+                } else {
+                    zone.classList.remove('zone-highlight');
                 }
             });
-
-            activeItem.style.display = 'block';
-
-            if (!dropped) {
-                resetItem(activeItem);
-            }
-
-            // Limpieza
-            activeItem.classList.remove('dragging-active');
-            activeItem = null;
-            
-            // Limpiar listeners globales de mouse
-            document.removeEventListener('mousemove', handleMove);
-            document.removeEventListener('mouseup', handleEnd);
         }
 
-        // Listeners globales para mouse (PC testing)
-        document.addEventListener('mousemove', (e) => { if(activeItem && e.type === 'mousemove') handleMove(e); });
-        document.addEventListener('mouseup', (e) => { if(activeItem && e.type === 'mouseup') handleEnd(e); });
-
-        // --- LÓGICA ---
-        function checkDrop(zone, item) {
-            const needed = zone.dataset.need;
-            const id = item.id;
-            log("Intento drop: " + id + " en " + needed);
-
-            if (id === 'pizza') {
-                playAudio('snd-error');
-                shake(item);
-            } else if (id === needed) {
-                success(zone, item);
+        function onDragEnd(e) {
+            if (!dragState.active || !dragState.element) return;
+            
+            const point = e.changedTouches ? e.changedTouches[0] : e;
+            const x = point.clientX;
+            const y = point.clientY;
+            
+            log("Drag end at: " + Math.round(x) + "," + Math.round(y));
+            
+            // Quitar highlights
+            zones.forEach(z => z.classList.remove('zone-highlight'));
+            
+            // Buscar zona de drop
+            let droppedZone = null;
+            zones.forEach(zone => {
+                const rect = zone.getBoundingClientRect();
+                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                    droppedZone = zone;
+                }
+            });
+            
+            if (droppedZone) {
+                handleDrop(droppedZone);
             } else {
-                resetItem(item);
+                resetDrag();
+            }
+            
+            // Limpiar estado
+            if (dragState.element) {
+                dragState.element.classList.remove('dragging-active');
+            }
+            dragState.active = false;
+            dragState.element = null;
+            dragState.itemId = null;
+        }
+
+        function handleDrop(zone) {
+            const needed = zone.dataset.need;
+            const itemId = dragState.itemId;
+            const element = dragState.element;
+            
+            log("Drop: " + itemId + " en zona que necesita: " + needed);
+
+            if (itemId === 'pizza') {
+                // Error: pizza no es egipcia
+                playAudio('snd-error');
+                shakeAndReset(element);
+            } else if (itemId === needed) {
+                // ¡Correcto!
+                placeItem(zone, element, itemId);
+            } else {
+                // Objeto incorrecto para esta zona
+                resetDrag();
             }
         }
 
-        function success(zone, item) {
-            // Audio
-            if(item.id === 'corona') playAudio('snd-reina');
-            if(item.id === 'papiro') playAudio('snd-escriba');
-            if(item.id === 'trigo') playAudio('snd-campesino');
+        function placeItem(zone, element, itemId) {
+            // Reproducir audio de éxito
+            if (itemId === 'corona') playAudio('snd-reina');
+            if (itemId === 'papiro') playAudio('snd-escriba');
+            if (itemId === 'trigo') playAudio('snd-campesino');
 
-            // Clonar y colocar
-            const clone = item.cloneNode();
-            clone.classList.remove('draggable', 'dragging-active');
-            clone.classList.add('placed-item');
-            clone.id = 'placed-' + item.id;
+            // Quitar clases y estilos de drag
+            element.classList.remove('draggable', 'dragging-active');
+            element.classList.add('placed-item');
+            element.id = 'placed-' + itemId;
             
-            // Limpiar estilos inline del drag
-            clone.style.left = ''; clone.style.top = ''; 
+            // Limpiar estilos inline
+            element.style.left = '';
+            element.style.top = '';
+            element.style.position = '';
+            element.style.zIndex = '';
+            element.style.width = '';
+            element.style.height = '';
             
-            zone.appendChild(clone);
-            item.remove(); // Borrar del inventario
+            // Añadir a la zona
+            zone.appendChild(element);
+            
             itemsPlaced++;
+            log("Items colocados: " + itemsPlaced + "/" + totalItems);
             
-            if(itemsPlaced === totalItems) {
+            // ¿Victoria?
+            if (itemsPlaced === totalItems) {
                 setTimeout(() => {
-                    // Parar música de fondo
                     const bgm = document.getElementById('snd-bgm');
-                    if(bgm) bgm.pause();
-                    
+                    if (bgm) bgm.pause();
                     document.getElementById('win-screen').style.display = 'flex';
-                }, 2000);
+                    log("¡VICTORIA!");
+                }, 1500);
             }
         }
 
-        function resetItem(item) {
-            item.classList.remove('dragging-active');
-            item.style.left = '';
-            item.style.top = '';
-            item.style.transform = 'scale(1)';
+        function resetDrag() {
+            if (!dragState.element) return;
+            
+            const element = dragState.element;
+            const inventory = document.getElementById('inventory');
+            
+            // Quitar clase de arrastre
+            element.classList.remove('dragging-active');
+            
+            // Limpiar estilos inline
+            element.style.left = '';
+            element.style.top = '';
+            element.style.position = '';
+            element.style.zIndex = '';
+            element.style.width = '';
+            element.style.height = '';
+            
+            // Devolver al inventario
+            inventory.appendChild(element);
+            
+            log("Reset: " + dragState.itemId);
         }
 
-        function shake(item) {
-            item.classList.remove('dragging-active');
-            item.style.left = ''; item.style.top = '';
-            // Simple visual feedback
-            item.style.opacity = 0.5;
-            setTimeout(() => item.style.opacity = 1, 300);
+        function shakeAndReset(element) {
+            // Efecto visual de error
+            element.style.transition = 'transform 0.1s';
+            element.style.transform = 'translateX(-10px)';
+            
+            setTimeout(() => {
+                element.style.transform = 'translateX(10px)';
+            }, 100);
+            
+            setTimeout(() => {
+                element.style.transform = '';
+                element.style.transition = '';
+                resetDrag();
+            }, 200);
         }
 
         function playAudio(id) {
             const snd = document.getElementById(id);
-            if(snd) {
-                // Forzar volumen (salvo si es bgm que ya tiene el suyo)
-                if(id !== 'snd-bgm') snd.volume = 1.0;
-                
-                // Si hubo error, intenta recargar
-                if(snd.error) snd.load();
-
-                snd.currentTime = 0;
-                var promise = snd.play();
-                
-                if (promise !== undefined) {
-                    promise.catch(error => {
-                        log("ERROR AUDIO (" + id + "): " + error);
-                        document.getElementById('debug-console').style.display = 'block';
-                    });
-                }
-            } else {
-                log("Audio ID no encontrado: " + id);
+            if (!snd) {
+                log("Audio no encontrado: " + id);
+                return;
             }
+            
+            if (id !== 'snd-bgm') snd.volume = 1.0;
+            
+            snd.currentTime = 0;
+            snd.play().catch(error => {
+                log("Audio error (" + id + "): " + error.message);
+            });
         }
+
+        // ============ INICIALIZAR ============
+        document.addEventListener('DOMContentLoaded', () => {
+            initDraggables();
+            log("Sistema listo v4.0");
+        });
     </script>
 </body>
 </html>
