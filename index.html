@@ -33,33 +33,244 @@
             opacity: 0.8;
         }
 
-        /* --- PANTALLA DE INICIO --- */
-        #start-screen {
+        /* --- SISTEMA DE PANTALLAS --- */
+        .screen {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: none;
+        }
+        
+        .screen.active {
             display: flex;
             flex-direction: column;
+        }
+
+        /* --- PANTALLA DE INICIO --- */
+        #screen-start {
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
             justify-content: center;
             align-items: center;
             color: white;
             text-align: center;
         }
 
+        #screen-start h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
         #start-btn {
-            background: #FFD700;
+            background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
             color: #8B4513;
             border: 4px solid #FFF;
             padding: 20px 60px;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
             margin-top: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
         }
 
-        /* --- ESCENARIO --- */
+        #start-btn:active {
+            transform: scale(0.95);
+        }
+
+        .credits {
+            font-size: 0.9rem;
+            margin-top: 30px;
+            color: #f0e68c;
+            line-height: 1.6;
+        }
+
+        .version {
+            font-size: 0.7rem;
+            margin-top: 15px;
+            color: #888;
+        }
+
+        /* === PANTALLA MUSEO === */
+        #screen-museum {
+            background: url('https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo_1.png') center center / cover no-repeat;
+            background-color: #f7e6ad; /* Fallback si falla la imagen */
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        .museum-title {
+            font-size: 1.8rem;
+            color: #8B4513;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .museum-subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .museum-characters {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            width: 100%;
+            height: 60%;
+            padding: 0 10px;
+        }
+
+        .museum-character {
+            position: relative;
+            width: 30%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .museum-character:active {
+            transform: scale(0.98);
+        }
+
+        .museum-character img {
+            max-width: 100%;
+            max-height: 70%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .museum-character .label {
+            background: #FFF;
+            border: 2px solid #DAA520;
+            color: #8B4513;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 5px;
+            pointer-events: none;
+        }
+
+        /* Bocadillo de texto (Speech Bubble) */
+        .speech-bubble {
+            position: absolute;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border: 3px solid #DAA520;
+            border-radius: 20px;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            color: #333;
+            text-align: center;
+            max-width: 90%;
+            min-width: 80%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 100;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: white;
+        }
+
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 12px solid transparent;
+            border-top-color: #DAA520;
+            z-index: -1;
+        }
+
+        .speech-bubble.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Indicador de "tócame" */
+        .tap-indicator {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5rem;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .museum-character.visited .tap-indicator {
+            display: none;
+        }
+
+        /* Botón A JUGAR */
+        #play-game-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(180deg, #32CD32 0%, #228B22 100%);
+            color: white;
+            border: 4px solid #FFF;
+            padding: 15px 35px;
+            font-size: 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s, transform 0.2s;
+            z-index: 200;
+        }
+
+        #play-game-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            animation: pulse 2s infinite;
+        }
+
+        #play-game-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+            50% { box-shadow: 0 6px 30px rgba(50,205,50,0.6); }
+        }
+
+        /* === PANTALLA JUEGO === */
+        #screen-game {
+            display: none;
+        }
+
+        #screen-game.active {
+            display: block;
+        }
+
         #game-stage {
             height: 65%;
             width: 100%;
@@ -137,7 +348,6 @@
             -webkit-touch-callout: none;
         }
 
-        /* ========== CLAVE: Estilo del elemento mientras se arrastra ========== */
         .dragging-active {
             position: fixed !important;
             z-index: 9999 !important;
@@ -145,10 +355,8 @@
             height: 20vh !important;
             pointer-events: none !important;
             opacity: 0.9;
-            /* La posición se controla con left/top desde JS */
         }
 
-        /* Objeto colocado */
         .placed-item {
             position: absolute;
             z-index: 20;
@@ -165,24 +373,35 @@
             0% { transform: scale(0); } 
             100% { transform: scale(1); } 
         }
+
+        .zone-highlight {
+            background: rgba(255, 215, 0, 0.3) !important;
+            border: 3px solid gold !important;
+        }
         
-        /* Pantalla Victoria */
-        #win-screen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+        /* === PANTALLA VICTORIA === */
+        #screen-victory {
             background: rgba(218, 165, 32, 0.95);
             z-index: 2000;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        /* Highlight zona cuando arrastramos encima */
-        .zone-highlight {
-            background: rgba(255, 215, 0, 0.3) !important;
-            border: 3px solid gold !important;
+        #screen-victory h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 3px 3px 6px #000;
+            margin-bottom: 30px;
+        }
+
+        #screen-victory button {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border-radius: 25px;
+            border: 3px solid white;
+            background: #8B4513;
+            color: white;
+            cursor: pointer;
         }
 
         /* DEBUG */
@@ -199,7 +418,7 @@
             z-index: 10000;
             pointer-events: none;
             padding: 5px;
-            display: none; /* Cambiar a 'block' para debug */
+            display: none;
         }
     </style>
 </head>
@@ -209,58 +428,102 @@
 
     <img id="bg-image" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo.png" onerror="this.style.display='none'; log('Error carga fondo');">
 
-    <!-- PANTALLA INICIO -->
-    <div id="start-screen">
+    <!-- ========== PANTALLA 1: INICIO ========== -->
+    <div id="screen-start" class="screen active">
         <h1>🏺 Misión Egipto 🏺</h1>
-        <button id="start-btn">¡JUGAR!</button>
-        <p style="font-size: 0.9rem; margin-top:30px; color: #f0e68c; line-height: 1.6;">
+        <button id="start-btn">¡EMPEZAR!</button>
+        <p class="credits">
             Voces e imágenes creadas por: <strong>Nara Gómez Rivas</strong><br>
             Música de fondo: <strong>Enzo Gómez Rivas</strong>
         </p>
-        <p style="font-size: 0.7rem; margin-top:15px; color: #888;">v4.0</p>
+        <p class="version">v5.0</p>
     </div>
 
-    <!-- PANTALLA VICTORIA -->
-    <div id="win-screen">
-        <h1 style="font-size: 3rem; color: #fff; text-shadow: 2px 2px #000;">¡BRAVO NARA!</h1>
-        <button onclick="location.reload()" style="padding: 15px; font-size: 1.5rem; border-radius: 20px;">Jugar otra vez</button>
+    <!-- ========== PANTALLA 2: MUSEO ========== -->
+    <div id="screen-museum" class="screen">
+        <h2 class="museum-title">🏛️ El Museo de Egipto 🏛️</h2>
+        <p class="museum-subtitle">¡Toca a los personajes para conocerlos!</p>
+        
+        <div class="museum-characters">
+            <!-- Escriba -->
+            <div class="museum-character" id="museum-escriba" data-audio="snd-info-escriba" data-text="¡Escribo con dibujos! Son los abuelos de los emojis.">
+                <div class="speech-bubble" id="bubble-escriba"></div>
+                <span class="tap-indicator">👆</span>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" onerror="this.parentElement.innerHTML='<div style=\'background:#ddd;height:60%;display:flex;align-items:center;justify-content:center;\'>ESCRIBA</div>'">
+                <div class="label">Escriba</div>
+            </div>
+
+            <!-- Cleopatra -->
+            <div class="museum-character" id="museum-cleopatra" data-audio="snd-info-cleopatra" data-text="Soy la última reina... ¡y hablo 7 idiomas!">
+                <div class="speech-bubble" id="bubble-cleopatra"></div>
+                <span class="tap-indicator">👆</span>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" onerror="this.parentElement.innerHTML='<div style=\'background:#ddd;height:60%;display:flex;align-items:center;justify-content:center;\'>CLEOPATRA</div>'">
+                <div class="label">Faraona</div>
+            </div>
+
+            <!-- Campesino -->
+            <div class="museum-character" id="museum-campesino" data-audio="snd-info-campesino" data-text="Gracias al río Nilo planto trigo para el pan.">
+                <div class="speech-bubble" id="bubble-campesino"></div>
+                <span class="tap-indicator">👆</span>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" onerror="this.parentElement.innerHTML='<div style=\'background:#ddd;height:60%;display:flex;align-items:center;justify-content:center;\'>CAMPESINO</div>'">
+                <div class="label">Campesino</div>
+            </div>
+        </div>
+
+        <button id="play-game-btn">¡A JUGAR! 🎮</button>
     </div>
 
-    <!-- AUDIOS -->
+    <!-- ========== PANTALLA 3: JUEGO ========== -->
+    <div id="screen-game" class="screen">
+        <div id="game-stage">
+            <div class="character-zone" id="zone-escriba" data-need="papiro">
+                <div class="fallback-box">ESCRIBA AQUÍ</div>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" class="char-img" onerror="imgError(this)">
+                <div class="label">Escriba</div>
+            </div>
+
+            <div class="character-zone" id="zone-cleopatra" data-need="corona">
+                <div class="fallback-box">CLEOPATRA AQUÍ</div>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" class="char-img" onerror="imgError(this)">
+                <div class="label">Faraona</div>
+            </div>
+
+            <div class="character-zone" id="zone-campesino" data-need="trigo">
+                <div class="fallback-box">CAMPESINO AQUÍ</div>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" class="char-img" onerror="imgError(this)">
+                <div class="label">Campesino</div>
+            </div>
+        </div>
+
+        <div id="inventory">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/trigo.png" class="draggable" id="trigo" data-item="trigo" onerror="this.style.backgroundColor='red'">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pizza.png" class="draggable" id="pizza" data-item="pizza" onerror="this.style.backgroundColor='red'">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/corona.png" class="draggable" id="corona" data-item="corona" onerror="this.style.backgroundColor='red'">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pergamino.png" class="draggable" id="papiro" data-item="papiro" onerror="this.style.backgroundColor='red'">
+        </div>
+    </div>
+
+    <!-- ========== PANTALLA 4: VICTORIA ========== -->
+    <div id="screen-victory" class="screen">
+        <h1>🎉 ¡BRAVO NARA! 🎉</h1>
+        <button onclick="location.reload()">Jugar otra vez</button>
+    </div>
+
+    <!-- ========== AUDIOS ========== -->
+    <!-- Música de fondo -->
     <audio id="snd-bgm" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/musica_fondo.m4a" loop preload="auto"></audio>
+    
+    <!-- Audios del juego -->
     <audio id="snd-intro" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/intro_egipto.m4a" preload="auto"></audio>
     <audio id="snd-reina" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_cleopatra.m4a" preload="auto"></audio>
     <audio id="snd-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_escriba.m4a" preload="auto"></audio>
     <audio id="snd-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_campesino.m4a" preload="auto"></audio>
     <audio id="snd-error" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/error_pizza.m4a" preload="auto"></audio>
-
-    <!-- JUEGO -->
-    <div id="game-stage">
-        <div class="character-zone" id="zone-escriba" data-need="papiro">
-            <div class="fallback-box">ESCRIBA AQUÍ</div>
-            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" class="char-img" onerror="imgError(this)">
-            <div class="label">Escriba</div>
-        </div>
-
-        <div class="character-zone" id="zone-cleopatra" data-need="corona">
-            <div class="fallback-box">CLEOPATRA AQUÍ</div>
-            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" class="char-img" onerror="imgError(this)">
-            <div class="label">Faraona</div>
-        </div>
-
-        <div class="character-zone" id="zone-campesino" data-need="trigo">
-            <div class="fallback-box">CAMPESINO AQUÍ</div>
-            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" class="char-img" onerror="imgError(this)">
-            <div class="label">Campesino</div>
-        </div>
-    </div>
-
-    <div id="inventory">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/trigo.png" class="draggable" id="trigo" data-item="trigo" onerror="this.style.backgroundColor='red'">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pizza.png" class="draggable" id="pizza" data-item="pizza" onerror="this.style.backgroundColor='red'">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/corona.png" class="draggable" id="corona" data-item="corona" onerror="this.style.backgroundColor='red'">
-        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pergamino.png" class="draggable" id="papiro" data-item="papiro" onerror="this.style.backgroundColor='red'">
-    </div>
+    
+    <!-- NUEVOS: Audios informativos del museo -->
+    <audio id="snd-info-cleopatra" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_cleopatra.m4a" preload="auto"></audio>
+    <audio id="snd-info-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_escriba.m4a" preload="auto"></audio>
+    <audio id="snd-info-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_campesino.m4a" preload="auto"></audio>
 
     <script>
         // ============ SISTEMA DE LOGS ============
@@ -285,11 +548,29 @@
             log("Fallo imagen: " + image.src.split('/').pop());
         }
 
-        // ============ VARIABLES DEL JUEGO ============
+        // ============ SISTEMA DE PANTALLAS ============
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            // Mostrar la pantalla solicitada
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+                log("Pantalla: " + screenId);
+            }
+        }
+
+        // ============ VARIABLES GLOBALES ============
         let itemsPlaced = 0;
         const totalItems = 3;
+        let charactersVisited = 0;
         
-        // ===== NUEVO SISTEMA DE DRAG =====
+        // Lista de audios informativos para poder pararlos
+        const infoAudios = ['snd-info-cleopatra', 'snd-info-escriba', 'snd-info-campesino'];
+
+        // Drag state
         let dragState = {
             active: false,
             element: null,
@@ -300,32 +581,110 @@
 
         const zones = document.querySelectorAll('.character-zone');
 
-        // ============ INICIO ============
+        // ============ PANTALLA INICIO ============
         document.getElementById('start-btn').addEventListener('click', () => {
-            document.getElementById('start-screen').style.display = 'none';
-            log("Juego iniciado");
-            
-            playAudio('snd-intro');
-            
+            // Iniciar música de fondo
             const bgm = document.getElementById('snd-bgm');
             if (bgm) {
-                bgm.volume = 0.3;
+                bgm.volume = 0.2;
                 bgm.currentTime = 0;
                 bgm.play().catch(e => log("BGM error: " + e.message));
             }
+            
+            // Pasar a pantalla Museo
+            showScreen('screen-museum');
+            log("Música iniciada, entrando al museo");
         });
 
-        // ============ NUEVO DRAG & DROP ============
+        // ============ PANTALLA MUSEO ============
+        const museumCharacters = document.querySelectorAll('.museum-character');
         
+        museumCharacters.forEach(character => {
+            character.addEventListener('click', handleCharacterTap);
+            character.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                handleCharacterTap.call(this, e);
+            });
+        });
+
+        function handleCharacterTap(e) {
+            const character = this;
+            const audioId = character.dataset.audio;
+            const text = character.dataset.text;
+            const characterId = character.id.replace('museum-', '');
+            
+            log("Tocado: " + characterId);
+            
+            // 1. Parar TODOS los audios informativos
+            stopAllInfoAudios();
+            
+            // 2. Ocultar TODOS los bocadillos
+            document.querySelectorAll('.speech-bubble').forEach(bubble => {
+                bubble.classList.remove('visible');
+            });
+            
+            // 3. Mostrar el bocadillo de este personaje
+            const bubble = document.getElementById('bubble-' + characterId);
+            if (bubble) {
+                bubble.textContent = text;
+                bubble.classList.add('visible');
+            }
+            
+            // 4. Reproducir el audio de este personaje
+            playAudio(audioId);
+            
+            // 5. Marcar como visitado
+            if (!character.classList.contains('visited')) {
+                character.classList.add('visited');
+                charactersVisited++;
+                log("Personajes visitados: " + charactersVisited);
+            }
+            
+            // 6. Mostrar botón "A JUGAR" después del primer personaje
+            if (charactersVisited >= 1) {
+                document.getElementById('play-game-btn').classList.add('visible');
+            }
+        }
+
+        function stopAllInfoAudios() {
+            infoAudios.forEach(id => {
+                const audio = document.getElementById(id);
+                if (audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            });
+        }
+
+        // Botón "A JUGAR"
+        document.getElementById('play-game-btn').addEventListener('click', () => {
+            // Parar audios informativos
+            stopAllInfoAudios();
+            
+            // Ocultar bocadillos
+            document.querySelectorAll('.speech-bubble').forEach(bubble => {
+                bubble.classList.remove('visible');
+            });
+            
+            // Reproducir intro del juego
+            playAudio('snd-intro');
+            
+            // Pasar a pantalla de juego
+            showScreen('screen-game');
+            
+            // Inicializar el drag & drop
+            initDraggables();
+            
+            log("Iniciando juego");
+        });
+
+        // ============ PANTALLA JUEGO (DRAG & DROP) ============
         function initDraggables() {
             document.querySelectorAll('.draggable').forEach(item => {
-                // TOUCH
                 item.addEventListener('touchstart', onDragStart, { passive: false });
-                // MOUSE
                 item.addEventListener('mousedown', onDragStart);
             });
             
-            // Eventos globales para move y end
             document.addEventListener('touchmove', onDragMove, { passive: false });
             document.addEventListener('touchend', onDragEnd);
             document.addEventListener('touchcancel', onDragEnd);
@@ -337,34 +696,24 @@
         function onDragStart(e) {
             const target = e.target;
             
-            // Ignorar si ya está colocado
             if (!target.classList.contains('draggable')) return;
             
             e.preventDefault();
             e.stopPropagation();
             
-            // Obtener coordenadas
             const point = e.touches ? e.touches[0] : e;
             const rect = target.getBoundingClientRect();
             
-            // Guardar estado
             dragState.active = true;
             dragState.element = target;
             dragState.itemId = target.id;
             
-            // ===== CLAVE: Calcular el tamaño del elemento arrastrado =====
-            // Usamos la mitad del tamaño para centrar bajo el dedo
-            const dragSize = Math.min(window.innerHeight * 0.20, 150); // 20vh o max 150px
+            const dragSize = Math.min(window.innerHeight * 0.20, 150);
             dragState.offsetX = dragSize / 2;
             dragState.offsetY = dragSize / 2;
             
-            // Mover al body para position:fixed funcione bien
             document.body.appendChild(target);
-            
-            // Aplicar clase de arrastre
             target.classList.add('dragging-active');
-            
-            // Posicionar CENTRADO bajo el dedo
             updateDragPosition(point.clientX, point.clientY);
             
             log("Drag start: " + dragState.itemId);
@@ -377,15 +726,11 @@
             
             const point = e.touches ? e.touches[0] : e;
             updateDragPosition(point.clientX, point.clientY);
-            
-            // Highlight de zona
             highlightZoneUnderPoint(point.clientX, point.clientY);
         }
 
         function updateDragPosition(x, y) {
             if (!dragState.element) return;
-            
-            // ===== CLAVE: Centrar el elemento bajo el dedo =====
             dragState.element.style.left = (x - dragState.offsetX) + 'px';
             dragState.element.style.top = (y - dragState.offsetY) + 'px';
         }
@@ -410,10 +755,8 @@
             
             log("Drag end at: " + Math.round(x) + "," + Math.round(y));
             
-            // Quitar highlights
             zones.forEach(z => z.classList.remove('zone-highlight'));
             
-            // Buscar zona de drop
             let droppedZone = null;
             zones.forEach(zone => {
                 const rect = zone.getBoundingClientRect();
@@ -428,7 +771,6 @@
                 resetDrag();
             }
             
-            // Limpiar estado
             if (dragState.element) {
                 dragState.element.classList.remove('dragging-active');
             }
@@ -445,30 +787,24 @@
             log("Drop: " + itemId + " en zona que necesita: " + needed);
 
             if (itemId === 'pizza') {
-                // Error: pizza no es egipcia
                 playAudio('snd-error');
                 shakeAndReset(element);
             } else if (itemId === needed) {
-                // ¡Correcto!
                 placeItem(zone, element, itemId);
             } else {
-                // Objeto incorrecto para esta zona
                 resetDrag();
             }
         }
 
         function placeItem(zone, element, itemId) {
-            // Reproducir audio de éxito
             if (itemId === 'corona') playAudio('snd-reina');
             if (itemId === 'papiro') playAudio('snd-escriba');
             if (itemId === 'trigo') playAudio('snd-campesino');
 
-            // Quitar clases y estilos de drag
             element.classList.remove('draggable', 'dragging-active');
             element.classList.add('placed-item');
             element.id = 'placed-' + itemId;
             
-            // Limpiar estilos inline
             element.style.left = '';
             element.style.top = '';
             element.style.position = '';
@@ -476,18 +812,16 @@
             element.style.width = '';
             element.style.height = '';
             
-            // Añadir a la zona
             zone.appendChild(element);
             
             itemsPlaced++;
             log("Items colocados: " + itemsPlaced + "/" + totalItems);
             
-            // ¿Victoria?
             if (itemsPlaced === totalItems) {
                 setTimeout(() => {
                     const bgm = document.getElementById('snd-bgm');
                     if (bgm) bgm.pause();
-                    document.getElementById('win-screen').style.display = 'flex';
+                    showScreen('screen-victory');
                     log("¡VICTORIA!");
                 }, 1500);
             }
@@ -499,10 +833,7 @@
             const element = dragState.element;
             const inventory = document.getElementById('inventory');
             
-            // Quitar clase de arrastre
             element.classList.remove('dragging-active');
-            
-            // Limpiar estilos inline
             element.style.left = '';
             element.style.top = '';
             element.style.position = '';
@@ -510,14 +841,11 @@
             element.style.width = '';
             element.style.height = '';
             
-            // Devolver al inventario
             inventory.appendChild(element);
-            
             log("Reset: " + dragState.itemId);
         }
 
         function shakeAndReset(element) {
-            // Efecto visual de error
             element.style.transition = 'transform 0.1s';
             element.style.transform = 'translateX(-10px)';
             
@@ -532,6 +860,7 @@
             }, 200);
         }
 
+        // ============ UTILIDADES DE AUDIO ============
         function playAudio(id) {
             const snd = document.getElementById(id);
             if (!snd) {
@@ -547,10 +876,9 @@
             });
         }
 
-        // ============ INICIALIZAR ============
+        // ============ INICIALIZACIÓN ============
         document.addEventListener('DOMContentLoaded', () => {
-            initDraggables();
-            log("Sistema listo v4.0");
+            log("Sistema listo v5.0");
         });
     </script>
 </body>
