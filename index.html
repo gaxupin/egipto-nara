@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Los Secretos de Egipto - Proyecto Nara</title>
+    <style>
+        /* --- RESET Y BASE --- */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f7e6ad; /* Color arena por si falla el fondo */
+            font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Imagen de fondo separada para manejar errores */
+        #bg-image {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        /* --- PANTALLA DE INICIO --- */
+        #start-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        #start-btn {
+            background: #FFD700;
+            color: #8B4513;
+            border: 4px solid #FFF;
+            padding: 20px 60px;
+            font-size: 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        /* --- ESCENARIO --- */
+        #game-stage {
+            height: 65%;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .character-zone {
+            position: relative;
+            width: 30%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            border: 2px dashed rgba(0,0,0,0.1); /* Ayuda visual sutil */
+            border-radius: 10px;
+        }
+
+        #zone-cleopatra { width: 35%; z-index: 10; }
+
+        .char-img {
+            max-width: 100%;
+            max-height: 85%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        /* Si la imagen falla, mostramos esto */
+        .fallback-box {
+            width: 100%; height: 80%;
+            background: rgba(255, 255, 255, 0.5);
+            display: flex; 
+            justify-content: center; align-items: center;
+            text-align: center; font-weight: bold; color: #555;
+            position: absolute; bottom: 40px;
+            display: none; /* Oculto por defecto */
+        }
+
+        .label {
+            background: #FFF;
+            border: 2px solid #DAA520;
+            color: #8B4513;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 5px;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* --- INVENTARIO --- */
+        #inventory {
+            height: 35%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border-top: 5px solid #DAA520;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            position: absolute; bottom: 0; width: 100%;
+        }
+
+        .draggable {
+            width: 18vh; height: 18vh;
+            cursor: grab;
+            transition: transform 0.1s;
+            touch-action: none;
+            object-fit: contain;
+        }
+
+        /* Estilo activo al arrastrar */
+        .dragging-active {
+            position: fixed !important;
+            z-index: 9999 !important;
+            width: 22vh !important; height: 22vh !important;
+            transform: translate(-50%, -50%) scale(1.1);
+            pointer-events: none; /* CLAVE: El toque atraviesa la imagen para detectar la zona */
+        }
+
+        /* Objeto colocado */
+        .placed-item {
+            position: absolute;
+            z-index: 20;
+            width: 40%;
+            animation: popIn 0.5s ease;
+        }
+        
+        #placed-corona { top: 0%; left: 30%; }
+        #placed-papiro { top: 50%; left: 10%; }
+        #placed-trigo { top: 40%; right: 0%; }
+
+        /* DEBUG CONSOLE (Para ver errores en tablet) */
+        #debug-console {
+            position: fixed; bottom: 0; right: 0; 
+            width: 200px; height: 100px; 
+            background: rgba(0,0,0,0.8); color: lime; 
+            font-size: 10px; overflow-y: scroll; 
+            z-index: 10000; pointer-events: none;
+            display: none; /* Activar si falla algo */
+        }
+
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+        
+        /* Pantalla Victoria */
+        #win-screen {
+            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(218, 165, 32, 0.95);
+            z-index: 2000; flex-direction: column;
+            justify-content: center; align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- DEBUGGER VISUAL -->
+    <div id="debug-console">Iniciando sistema...<br></div>
+
+    <!-- FONDO -->
+    <img id="bg-image" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo.png" onerror="this.style.display='none'; log('Error carga fondo');">
+
+    <!-- PANTALLA INICIO -->
+    <div id="start-screen">
+        <h1>🏺 Misión Egipto 🏺</h1>
+        <button id="start-btn">¡JUGAR!</button>
+        <p style="font-size: 0.8rem; margin-top:20px; color: #ccc;">V 3.2 - Con Música</p>
+    </div>
+
+    <!-- PANTALLA VICTORIA -->
+    <div id="win-screen">
+        <h1 style="font-size: 3rem; color: #fff; text-shadow: 2px 2px #000;">¡BRAVO NARA!</h1>
+        <button onclick="location.reload()" style="padding: 15px; font-size: 1.5rem; border-radius: 20px;">Jugar otra vez</button>
+    </div>
+
+    <!-- AUDIOS (Con preload="auto") -->
+    <!-- MÚSICA DE FONDO (Loop) -->
+    <audio id="snd-bgm" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/musica_fondo.m4a" loop preload="auto"></audio>
+
+    <audio id="snd-intro" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/intro_egipto.m4a" preload="auto"></audio>
+    <audio id="snd-reina" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_cleopatra.m4a" preload="auto"></audio>
+    <audio id="snd-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_escriba.m4a" preload="auto"></audio>
+    <audio id="snd-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_campesino.m4a" preload="auto"></audio>
+    <audio id="snd-error" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/error_pizza.m4a" preload="auto"></audio>
+
+    <!-- JUEGO -->
+    <div id="game-stage">
+        <!-- Escriba -->
+        <div class="character-zone" id="zone-escriba" data-need="papiro">
+            <div class="fallback-box">ESCRIBA AQUÍ</div>
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" class="char-img" onerror="imgError(this)">
+            <div class="label">Escriba</div>
+        </div>
+
+        <!-- Cleopatra -->
+        <div class="character-zone" id="zone-cleopatra" data-need="corona">
+            <div class="fallback-box">CLEOPATRA AQUÍ</div>
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" class="char-img" onerror="imgError(this)">
+            <div class="label">Faraona</div>
+        </div>
+
+        <!-- Campesino -->
+        <div class="character-zone" id="zone-campesino" data-need="trigo">
+            <div class="fallback-box">CAMPESINO AQUÍ</div>
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" class="char-img" onerror="imgError(this)">
+            <div class="label">Campesino</div>
+        </div>
+    </div>
+
+    <div id="inventory">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/trigo.png" class="draggable" id="trigo" onerror="this.style.backgroundColor='red'">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pizza.png" class="draggable" id="pizza" onerror="this.style.backgroundColor='red'">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/corona.png" class="draggable" id="corona" onerror="this.style.backgroundColor='red'">
+        <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pergamino.png" class="draggable" id="papiro" onerror="this.style.backgroundColor='red'">
+    </div>
+
+    <script>
+        // --- SISTEMA DE LOGS ---
+        function log(msg) {
+            const consoleDiv = document.getElementById('debug-console');
+            consoleDiv.innerHTML += msg + "<br>";
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            console.log(msg);
+        }
+
+        window.onerror = function(msg, url, line) {
+            log("ERROR GLOBAL: " + msg);
+            document.getElementById('debug-console').style.display = 'block'; // Mostrar si hay error grave
+        };
+
+        // --- MANEJO DE IMÁGENES ROTAS ---
+        function imgError(image) {
+            image.style.display = "none";
+            // Mostrar la caja de texto detrás
+            const fallback = image.parentElement.querySelector('.fallback-box');
+            if(fallback) fallback.style.display = "flex";
+            log("Fallo imagen: " + image.src);
+        }
+
+        // --- VARIABLES JUEGO ---
+        let itemsPlaced = 0;
+        const totalItems = 3;
+        let activeItem = null;
+
+        // --- INICIO ---
+        document.getElementById('start-btn').addEventListener('click', () => {
+            document.getElementById('start-screen').style.display = 'none';
+            log("Iniciando...");
+            
+            // 1. Reproducir Intro
+            playAudio('snd-intro');
+            
+            // 2. Iniciar Música de Fondo (Loop)
+            const bgm = document.getElementById('snd-bgm');
+            if(bgm) {
+                bgm.volume = 0.3; // Volumen suave (30%)
+                bgm.currentTime = 0;
+                bgm.play().catch(e => log("Error BGM: " + e));
+            }
+        });
+
+        // --- DRAG & DROP ROBUSTO ---
+        const draggables = document.querySelectorAll('.draggable');
+        const zones = document.querySelectorAll('.character-zone');
+
+        draggables.forEach(item => {
+            // Touch
+            item.addEventListener('touchstart', handleStart, {passive: false});
+            item.addEventListener('touchmove', handleMove, {passive: false});
+            item.addEventListener('touchend', handleEnd);
+            // Mouse
+            item.addEventListener('mousedown', handleStart);
+        });
+
+        function handleStart(e) {
+            if (e.target.classList.contains('placed-item')) return;
+            e.preventDefault();
+
+            activeItem = e.target;
+            
+            // Truco visual: Ponemos la clase que lo fija a la pantalla
+            activeItem.classList.add('dragging-active');
+            
+            // Movemos inmediatamente
+            const point = e.touches ? e.touches[0] : e;
+            updatePosition(point.clientX, point.clientY);
+            
+            log("Start Drag: " + activeItem.id);
+        }
+
+        function handleMove(e) {
+            if (!activeItem) return;
+            e.preventDefault();
+            const point = e.touches ? e.touches[0] : e;
+            updatePosition(point.clientX, point.clientY);
+        }
+
+        function updatePosition(x, y) {
+            if(activeItem) {
+                activeItem.style.left = x + 'px';
+                activeItem.style.top = y + 'px';
+            }
+        }
+
+        function handleEnd(e) {
+            if (!activeItem) return;
+            
+            // Obtenemos coordenadas finales
+            const point = e.changedTouches ? e.changedTouches[0] : e;
+            const x = point.clientX;
+            const y = point.clientY;
+
+            // Detección manual de colisión (Hit Test)
+            let dropped = false;
+            
+            // Ocultamos el item un momento para ver qué hay debajo (opcional, pero hit test manual es mejor)
+            activeItem.style.display = 'none';
+            
+            // Miramos en cada zona si el dedo cae dentro
+            zones.forEach(zone => {
+                const rect = zone.getBoundingClientRect();
+                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                    checkDrop(zone, activeItem);
+                    dropped = true;
+                }
+            });
+
+            activeItem.style.display = 'block';
+
+            if (!dropped) {
+                resetItem(activeItem);
+            }
+
+            // Limpieza
+            activeItem.classList.remove('dragging-active');
+            activeItem = null;
+            
+            // Limpiar listeners globales de mouse
+            document.removeEventListener('mousemove', handleMove);
+            document.removeEventListener('mouseup', handleEnd);
+        }
+
+        // Listeners globales para mouse (PC testing)
+        document.addEventListener('mousemove', (e) => { if(activeItem && e.type === 'mousemove') handleMove(e); });
+        document.addEventListener('mouseup', (e) => { if(activeItem && e.type === 'mouseup') handleEnd(e); });
+
+        // --- LÓGICA ---
+        function checkDrop(zone, item) {
+            const needed = zone.dataset.need;
+            const id = item.id;
+            log("Intento drop: " + id + " en " + needed);
+
+            if (id === 'pizza') {
+                playAudio('snd-error');
+                shake(item);
+            } else if (id === needed) {
+                success(zone, item);
+            } else {
+                resetItem(item);
+            }
+        }
+
+        function success(zone, item) {
+            // Audio
+            if(item.id === 'corona') playAudio('snd-reina');
+            if(item.id === 'papiro') playAudio('snd-escriba');
+            if(item.id === 'trigo') playAudio('snd-campesino');
+
+            // Clonar y colocar
+            const clone = item.cloneNode();
+            clone.classList.remove('draggable', 'dragging-active');
+            clone.classList.add('placed-item');
+            clone.id = 'placed-' + item.id;
+            
+            // Limpiar estilos inline del drag
+            clone.style.left = ''; clone.style.top = ''; 
+            
+            zone.appendChild(clone);
+            item.remove(); // Borrar del inventario
+            itemsPlaced++;
+            
+            if(itemsPlaced === totalItems) {
+                setTimeout(() => {
+                    // Parar música de fondo
+                    const bgm = document.getElementById('snd-bgm');
+                    if(bgm) bgm.pause();
+                    
+                    document.getElementById('win-screen').style.display = 'flex';
+                }, 2000);
+            }
+        }
+
+        function resetItem(item) {
+            item.classList.remove('dragging-active');
+            item.style.left = '';
+            item.style.top = '';
+            item.style.transform = 'scale(1)';
+        }
+
+        function shake(item) {
+            item.classList.remove('dragging-active');
+            item.style.left = ''; item.style.top = '';
+            // Simple visual feedback
+            item.style.opacity = 0.5;
+            setTimeout(() => item.style.opacity = 1, 300);
+        }
+
+        function playAudio(id) {
+            const snd = document.getElementById(id);
+            if(snd) {
+                // Forzar volumen (salvo si es bgm que ya tiene el suyo)
+                if(id !== 'snd-bgm') snd.volume = 1.0;
+                
+                // Si hubo error, intenta recargar
+                if(snd.error) snd.load();
+
+                snd.currentTime = 0;
+                var promise = snd.play();
+                
+                if (promise !== undefined) {
+                    promise.catch(error => {
+                        log("ERROR AUDIO (" + id + "): " + error);
+                        document.getElementById('debug-console').style.display = 'block';
+                    });
+                }
+            } else {
+                log("Audio ID no encontrado: " + id);
+            }
+        }
+    </script>
+</body>
+</html>
