@@ -25,12 +25,225 @@
             position: fixed;
         }
 
+        /* ============================================
+           1. FONDO VIVO - EFECTO KEN BURNS
+           ============================================ */
         #bg-image {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: -10%; left: -10%;
+            width: 120%;
+            height: 120%;
             z-index: -1;
             object-fit: cover;
             opacity: 0.8;
+            animation: kenBurns 25s ease-in-out infinite alternate;
+            transform-origin: center center;
+        }
+
+        @keyframes kenBurns {
+            0% {
+                transform: scale(1) translate(0, 0);
+            }
+            33% {
+                transform: scale(1.08) translate(-2%, -1%);
+            }
+            66% {
+                transform: scale(1.05) translate(1%, -2%);
+            }
+            100% {
+                transform: scale(1.1) translate(-1%, 1%);
+            }
+        }
+
+        /* ============================================
+           2. ANIMACIÓN DE RESPIRACIÓN (IDLE)
+           ============================================ */
+        @keyframes breathe {
+            0%, 100% {
+                transform: translateY(0) scaleY(1);
+            }
+            50% {
+                transform: translateY(-4px) scaleY(1.015);
+            }
+        }
+
+        .char-img,
+        .museum-character img {
+            transform-origin: bottom center;
+            animation: breathe 3s ease-in-out infinite;
+        }
+
+        /* Delays diferentes para cada personaje */
+        #museum-escriba img,
+        #zone-escriba .char-img {
+            animation-delay: 0s;
+        }
+
+        #museum-cleopatra img,
+        #zone-cleopatra .char-img {
+            animation-delay: 0.8s;
+        }
+
+        #museum-campesino img,
+        #zone-campesino .char-img {
+            animation-delay: 1.6s;
+        }
+
+        /* ============================================
+           3. ANIMACIÓN AL HABLAR (TALKING)
+           ============================================ */
+        @keyframes talkingBounce {
+            0%, 100% {
+                transform: translateY(0) scaleY(1);
+            }
+            15% {
+                transform: translateY(-12px) scaleY(1.03);
+            }
+            30% {
+                transform: translateY(-3px) scaleY(0.98);
+            }
+            45% {
+                transform: translateY(-10px) scaleY(1.02);
+            }
+            60% {
+                transform: translateY(-2px) scaleY(0.99);
+            }
+            75% {
+                transform: translateY(-8px) scaleY(1.01);
+            }
+            90% {
+                transform: translateY(-1px) scaleY(1);
+            }
+        }
+
+        .museum-character img.talking {
+            animation: talkingBounce 0.5s ease-in-out infinite !important;
+            transform-origin: bottom center;
+        }
+
+        /* ============================================
+           4. INVENTARIO PALPITANTE (PULSE)
+           ============================================ */
+        @keyframes inventoryPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% {
+                transform: scale(1.08);
+                filter: brightness(1.15);
+            }
+        }
+
+        .draggable {
+            animation: inventoryPulse 1.8s ease-in-out infinite;
+            transform-origin: center center;
+        }
+
+        /* Delays para que no pulsen todos igual */
+        #trigo { animation-delay: 0s; }
+        #pizza { animation-delay: 0.45s; }
+        #corona { animation-delay: 0.9s; }
+        #papiro { animation-delay: 1.35s; }
+
+        /* Parar animación al arrastrar */
+        .draggable.dragging-active {
+            animation: none !important;
+            filter: brightness(1.2) drop-shadow(0 10px 25px rgba(0,0,0,0.5)) !important;
+        }
+
+        /* ============================================
+           5. TRANSICIONES SUAVES (POP-IN ELÁSTICO)
+           ============================================ */
+        @keyframes popInElastic {
+            0% {
+                opacity: 0;
+                transform: translateX(-50%) scale(0);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.15);
+            }
+            70% {
+                transform: translateX(-50%) scale(0.95);
+            }
+            85% {
+                transform: translateX(-50%) scale(1.05);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
+        @keyframes popInButton {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            85% {
+                transform: scale(1.08);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeSlideUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatTitle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 0 rgba(255,215,0,0.4); 
+            }
+            50% { 
+                box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 30px 10px rgba(255,215,0,0.3); 
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 0 rgba(50,205,50,0.4); 
+            }
+            50% { 
+                box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 25px 8px rgba(50,205,50,0.3); 
+            }
+        }
+
+        @keyframes tapBounce {
+            0%, 100% { 
+                transform: translateX(-50%) translateY(0) scale(1); 
+                opacity: 1;
+            }
+            50% { 
+                transform: translateX(-50%) translateY(-15px) scale(1.15); 
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes checkmarkPop {
+            0% { transform: scale(0) rotate(-45deg); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
         /* --- SISTEMA DE PANTALLAS --- */
@@ -39,14 +252,17 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             display: none;
+            opacity: 0;
         }
         
         .screen.active {
             display: flex;
             flex-direction: column;
+            opacity: 1;
+            animation: fadeSlideUp 0.5s ease-out forwards;
         }
 
-        /* --- PANTALLA DE INICIO --- */
+        /* === PANTALLA DE INICIO === */
         #screen-start {
             background: rgba(0, 0, 0, 0.9);
             z-index: 1000;
@@ -60,6 +276,7 @@
             font-size: 2.5rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: floatTitle 3s ease-in-out infinite;
         }
 
         #start-btn {
@@ -74,6 +291,7 @@
             margin-top: 30px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             transition: transform 0.2s;
+            animation: buttonGlow 2s ease-in-out infinite;
         }
 
         #start-btn:active {
@@ -96,24 +314,26 @@
         /* === PANTALLA MUSEO === */
         #screen-museum {
             background: url('https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo_1.png') center center / cover no-repeat;
-            background-color: #f7e6ad; /* Fallback si falla la imagen */
+            background-color: #f7e6ad;
             justify-content: flex-start;
             align-items: center;
             padding-top: 20px;
+            overflow: hidden;
         }
 
         .museum-title {
             font-size: 1.8rem;
             color: #8B4513;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.9);
             margin-bottom: 10px;
             text-align: center;
         }
 
         .museum-subtitle {
             font-size: 1rem;
-            color: #666;
+            color: #555;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
 
         .museum-characters {
@@ -134,11 +354,11 @@
             justify-content: flex-end;
             align-items: center;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: filter 0.2s;
         }
 
         .museum-character:active {
-            transform: scale(0.98);
+            filter: brightness(1.1);
         }
 
         .museum-character img {
@@ -146,59 +366,60 @@
             max-height: 70%;
             object-fit: contain;
             pointer-events: none;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
         .museum-character .label {
-            background: #FFF;
-            border: 2px solid #DAA520;
+            background: linear-gradient(180deg, #FFF 0%, #F5E6C8 100%);
+            border: 3px solid #DAA520;
             color: #8B4513;
-            padding: 5px 15px;
-            border-radius: 15px;
+            padding: 6px 18px;
+            border-radius: 20px;
             font-size: 1rem;
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 8px;
             pointer-events: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
-        /* Bocadillo de texto (Speech Bubble) */
+        /* Bocadillo de texto */
         .speech-bubble {
             position: absolute;
             top: 5%;
             left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            border: 3px solid #DAA520;
-            border-radius: 20px;
-            padding: 12px 15px;
+            transform: translateX(-50%) scale(0);
+            background: linear-gradient(180deg, #FFFEF0 0%, #FFF 100%);
+            border: 4px solid #DAA520;
+            border-radius: 25px;
+            padding: 14px 18px;
             font-size: 0.95rem;
             color: #333;
             text-align: center;
-            max-width: 90%;
-            min-width: 80%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 95%;
+            min-width: 85%;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.25);
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
             z-index: 100;
         }
 
         .speech-bubble::after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            bottom: -12px;
             left: 50%;
             transform: translateX(-50%);
             border: 10px solid transparent;
-            border-top-color: white;
+            border-top-color: #FFF;
         }
 
         .speech-bubble::before {
             content: '';
             position: absolute;
-            bottom: -20px;
+            bottom: -18px;
             left: 50%;
             transform: translateX(-50%);
-            border: 12px solid transparent;
+            border: 13px solid transparent;
             border-top-color: #DAA520;
             z-index: -1;
         }
@@ -206,25 +427,42 @@
         .speech-bubble.visible {
             opacity: 1;
             visibility: visible;
+            animation: popInElastic 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
 
-        /* Indicador de "tócame" */
+        /* Indicador de tócame */
         .tap-indicator {
             position: absolute;
-            top: 15%;
+            top: 12%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 1.5rem;
-            animation: bounce 1s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-10px); }
+            font-size: 2rem;
+            animation: tapBounce 1.2s ease-in-out infinite;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
         }
 
         .museum-character.visited .tap-indicator {
             display: none;
+        }
+
+        /* Checkmark para personaje visitado */
+        .museum-character.visited::after {
+            content: '✓';
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            background: linear-gradient(180deg, #32CD32, #228B22);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+            animation: checkmarkPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
 
         /* Botón A JUGAR */
@@ -243,23 +481,20 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s, visibility 0.5s, transform 0.2s;
             z-index: 200;
+            transform: scale(0);
         }
 
         #play-game-btn.visible {
             opacity: 1;
             visibility: visible;
-            animation: pulse 2s infinite;
+            animation: popInButton 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards, 
+                       pulse 2s ease-in-out 0.6s infinite;
         }
 
         #play-game-btn:active {
-            transform: scale(0.95);
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
-            50% { box-shadow: 0 6px 30px rgba(50,205,50,0.6); }
+            transform: scale(0.95) !important;
+            animation: none !important;
         }
 
         /* === PANTALLA JUEGO === */
@@ -269,6 +504,7 @@
 
         #screen-game.active {
             display: block;
+            animation: fadeSlideUp 0.5s ease-out forwards;
         }
 
         #game-stage {
@@ -290,6 +526,7 @@
             align-items: center;
             border: 2px dashed rgba(0,0,0,0.1);
             border-radius: 10px;
+            transition: background 0.2s, border 0.2s;
         }
 
         #zone-cleopatra { width: 35%; z-index: 10; }
@@ -299,36 +536,37 @@
             max-height: 85%;
             object-fit: contain;
             pointer-events: none;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
         }
 
         .fallback-box {
             width: 100%; height: 80%;
             background: rgba(255, 255, 255, 0.5);
-            display: flex; 
+            display: none; 
             justify-content: center; align-items: center;
             text-align: center; font-weight: bold; color: #555;
             position: absolute; bottom: 40px;
-            display: none;
         }
 
         .label {
-            background: #FFF;
-            border: 2px solid #DAA520;
+            background: linear-gradient(180deg, #FFF 0%, #F5E6C8 100%);
+            border: 3px solid #DAA520;
             color: #8B4513;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 1.2rem;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 1.1rem;
             font-weight: bold;
             margin-top: 5px;
             pointer-events: none;
             z-index: 5;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
         }
 
-        /* --- INVENTARIO --- */
+        /* Inventario */
         #inventory {
             height: 35%;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(5px);
+            background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.5) 100%);
+            backdrop-filter: blur(8px);
             border-top: 5px solid #DAA520;
             display: flex;
             justify-content: space-evenly;
@@ -337,6 +575,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
         }
 
         .draggable {
@@ -346,6 +585,7 @@
             object-fit: contain;
             touch-action: none;
             -webkit-touch-callout: none;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
         }
 
         .dragging-active {
@@ -354,14 +594,13 @@
             width: 20vh !important;
             height: 20vh !important;
             pointer-events: none !important;
-            opacity: 0.9;
         }
 
         .placed-item {
             position: absolute;
             z-index: 20;
             width: 40%;
-            animation: popIn 0.5s ease;
+            animation: popInButton 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
             pointer-events: none;
         }
         
@@ -369,19 +608,15 @@
         #placed-papiro { top: 50%; left: 10%; }
         #placed-trigo { top: 40%; right: 0%; }
 
-        @keyframes popIn { 
-            0% { transform: scale(0); } 
-            100% { transform: scale(1); } 
-        }
-
         .zone-highlight {
-            background: rgba(255, 215, 0, 0.3) !important;
+            background: rgba(255, 215, 0, 0.35) !important;
             border: 3px solid gold !important;
+            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.3);
         }
         
         /* === PANTALLA VICTORIA === */
         #screen-victory {
-            background: rgba(218, 165, 32, 0.95);
+            background: linear-gradient(180deg, rgba(218, 165, 32, 0.95), rgba(184, 134, 11, 0.95));
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -392,16 +627,24 @@
             color: #fff;
             text-shadow: 3px 3px 6px #000;
             margin-bottom: 30px;
+            animation: floatTitle 2s ease-in-out infinite;
         }
 
         #screen-victory button {
-            padding: 15px 40px;
+            padding: 18px 45px;
             font-size: 1.5rem;
-            border-radius: 25px;
-            border: 3px solid white;
-            background: #8B4513;
+            border-radius: 30px;
+            border: 4px solid white;
+            background: linear-gradient(180deg, #8B4513, #654321);
             color: white;
             cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            animation: buttonGlow 2s ease-in-out infinite;
+        }
+
+        #screen-victory button:active {
+            transform: scale(0.95);
         }
 
         /* DEBUG */
@@ -436,7 +679,7 @@
             Voces e imágenes creadas por: <strong>Nara Gómez Rivas</strong><br>
             Música de fondo: <strong>Enzo Gómez Rivas</strong>
         </p>
-        <p class="version">v5.0</p>
+        <p class="version">v6.0</p>
     </div>
 
     <!-- ========== PANTALLA 2: MUSEO ========== -->
@@ -510,17 +753,14 @@
     </div>
 
     <!-- ========== AUDIOS ========== -->
-    <!-- Música de fondo -->
     <audio id="snd-bgm" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/musica_fondo.m4a" loop preload="auto"></audio>
-    
-    <!-- Audios del juego -->
     <audio id="snd-intro" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/intro_egipto.m4a" preload="auto"></audio>
     <audio id="snd-reina" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_cleopatra.m4a" preload="auto"></audio>
     <audio id="snd-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_escriba.m4a" preload="auto"></audio>
     <audio id="snd-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_campesino.m4a" preload="auto"></audio>
     <audio id="snd-error" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/error_pizza.m4a" preload="auto"></audio>
     
-    <!-- NUEVOS: Audios informativos del museo -->
+    <!-- Audios informativos del museo -->
     <audio id="snd-info-cleopatra" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_cleopatra.m4a" preload="auto"></audio>
     <audio id="snd-info-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_escriba.m4a" preload="auto"></audio>
     <audio id="snd-info-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_campesino.m4a" preload="auto"></audio>
@@ -550,11 +790,9 @@
 
         // ============ SISTEMA DE PANTALLAS ============
         function showScreen(screenId) {
-            // Ocultar todas las pantallas
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
             });
-            // Mostrar la pantalla solicitada
             const targetScreen = document.getElementById(screenId);
             if (targetScreen) {
                 targetScreen.classList.add('active');
@@ -566,11 +804,10 @@
         let itemsPlaced = 0;
         const totalItems = 3;
         let charactersVisited = 0;
+        let currentTalkingImg = null; // Referencia a la imagen que está "hablando"
         
-        // Lista de audios informativos para poder pararlos
         const infoAudios = ['snd-info-cleopatra', 'snd-info-escriba', 'snd-info-campesino'];
 
-        // Drag state
         let dragState = {
             active: false,
             element: null,
@@ -583,15 +820,12 @@
 
         // ============ PANTALLA INICIO ============
         document.getElementById('start-btn').addEventListener('click', () => {
-            // Iniciar música de fondo
             const bgm = document.getElementById('snd-bgm');
             if (bgm) {
                 bgm.volume = 0.2;
                 bgm.currentTime = 0;
                 bgm.play().catch(e => log("BGM error: " + e.message));
             }
-            
-            // Pasar a pantalla Museo
             showScreen('screen-museum');
             log("Música iniciada, entrando al museo");
         });
@@ -612,35 +846,68 @@
             const audioId = character.dataset.audio;
             const text = character.dataset.text;
             const characterId = character.id.replace('museum-', '');
+            const characterImg = character.querySelector('img');
             
             log("Tocado: " + characterId);
             
             // 1. Parar TODOS los audios informativos
             stopAllInfoAudios();
             
-            // 2. Ocultar TODOS los bocadillos
+            // 2. Quitar clase "talking" de cualquier imagen anterior
+            if (currentTalkingImg) {
+                currentTalkingImg.classList.remove('talking');
+            }
+            
+            // 3. Ocultar TODOS los bocadillos
             document.querySelectorAll('.speech-bubble').forEach(bubble => {
                 bubble.classList.remove('visible');
             });
             
-            // 3. Mostrar el bocadillo de este personaje
+            // 4. Mostrar el bocadillo de este personaje
             const bubble = document.getElementById('bubble-' + characterId);
             if (bubble) {
                 bubble.textContent = text;
                 bubble.classList.add('visible');
             }
             
-            // 4. Reproducir el audio de este personaje
-            playAudio(audioId);
+            // 5. Añadir clase "talking" a la imagen para que salte
+            if (characterImg) {
+                characterImg.classList.add('talking');
+                currentTalkingImg = characterImg;
+            }
             
-            // 5. Marcar como visitado
+            // 6. Reproducir el audio y configurar el evento onended
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.currentTime = 0;
+                audio.volume = 1.0;
+                
+                // Cuando termine el audio, quitar la clase "talking"
+                audio.onended = function() {
+                    if (characterImg) {
+                        characterImg.classList.remove('talking');
+                    }
+                    if (currentTalkingImg === characterImg) {
+                        currentTalkingImg = null;
+                    }
+                    log("Audio terminado: " + audioId);
+                };
+                
+                audio.play().catch(error => {
+                    log("Audio error (" + audioId + "): " + error.message);
+                    // Si hay error, quitar la clase talking
+                    if (characterImg) characterImg.classList.remove('talking');
+                });
+            }
+            
+            // 7. Marcar como visitado
             if (!character.classList.contains('visited')) {
                 character.classList.add('visited');
                 charactersVisited++;
                 log("Personajes visitados: " + charactersVisited);
             }
             
-            // 6. Mostrar botón "A JUGAR" después del primer personaje
+            // 8. Mostrar botón "A JUGAR" después del primer personaje
             if (charactersVisited >= 1) {
                 document.getElementById('play-game-btn').classList.add('visible');
             }
@@ -652,27 +919,27 @@
                 if (audio) {
                     audio.pause();
                     audio.currentTime = 0;
+                    audio.onended = null; // Limpiar el listener
                 }
             });
+            
+            // Quitar clase talking de cualquier imagen
+            if (currentTalkingImg) {
+                currentTalkingImg.classList.remove('talking');
+                currentTalkingImg = null;
+            }
         }
 
         // Botón "A JUGAR"
         document.getElementById('play-game-btn').addEventListener('click', () => {
-            // Parar audios informativos
             stopAllInfoAudios();
             
-            // Ocultar bocadillos
             document.querySelectorAll('.speech-bubble').forEach(bubble => {
                 bubble.classList.remove('visible');
             });
             
-            // Reproducir intro del juego
             playAudio('snd-intro');
-            
-            // Pasar a pantalla de juego
             showScreen('screen-game');
-            
-            // Inicializar el drag & drop
             initDraggables();
             
             log("Iniciando juego");
@@ -702,7 +969,6 @@
             e.stopPropagation();
             
             const point = e.touches ? e.touches[0] : e;
-            const rect = target.getBoundingClientRect();
             
             dragState.active = true;
             dragState.element = target;
@@ -811,6 +1077,7 @@
             element.style.zIndex = '';
             element.style.width = '';
             element.style.height = '';
+            element.style.filter = '';
             
             zone.appendChild(element);
             
@@ -840,6 +1107,7 @@
             element.style.zIndex = '';
             element.style.width = '';
             element.style.height = '';
+            element.style.filter = '';
             
             inventory.appendChild(element);
             log("Reset: " + dragState.itemId);
@@ -847,17 +1115,21 @@
 
         function shakeAndReset(element) {
             element.style.transition = 'transform 0.1s';
-            element.style.transform = 'translateX(-10px)';
+            element.style.transform = 'translateX(-15px)';
             
             setTimeout(() => {
-                element.style.transform = 'translateX(10px)';
+                element.style.transform = 'translateX(15px)';
             }, 100);
+            
+            setTimeout(() => {
+                element.style.transform = 'translateX(-10px)';
+            }, 200);
             
             setTimeout(() => {
                 element.style.transform = '';
                 element.style.transition = '';
                 resetDrag();
-            }, 200);
+            }, 300);
         }
 
         // ============ UTILIDADES DE AUDIO ============
@@ -878,7 +1150,7 @@
 
         // ============ INICIALIZACIÓN ============
         document.addEventListener('DOMContentLoaded', () => {
-            log("Sistema listo v5.0");
+            log("Sistema listo v6.0 - Animado");
         });
     </script>
 </body>
