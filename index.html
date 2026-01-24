@@ -425,12 +425,23 @@
         /* Indicador tócame */
         .tap-indicator {
             position: absolute;
-            top: 5px;
+            top: 25%;
             left: 50%;
             transform: translateX(-50%);
             font-size: 1.1rem;
             animation: tapBounce 1.2s ease-in-out infinite;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            z-index: 50;
+        }
+
+        /* Ajuste específico para escriba (imagen más baja) */
+        #museum-escriba .tap-indicator {
+            top: 15%;
+        }
+
+        /* Ajuste para fila inferior */
+        .pyramid-level-2 .tap-indicator {
+            top: 20%;
         }
 
         .museum-character.visited .tap-indicator { display: none; }
