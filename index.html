@@ -41,30 +41,18 @@
         }
 
         @keyframes kenBurns {
-            0% {
-                transform: scale(1) translate(0, 0);
-            }
-            33% {
-                transform: scale(1.08) translate(-2%, -1%);
-            }
-            66% {
-                transform: scale(1.05) translate(1%, -2%);
-            }
-            100% {
-                transform: scale(1.1) translate(-1%, 1%);
-            }
+            0% { transform: scale(1) translate(0, 0); }
+            33% { transform: scale(1.08) translate(-2%, -1%); }
+            66% { transform: scale(1.05) translate(1%, -2%); }
+            100% { transform: scale(1.1) translate(-1%, 1%); }
         }
 
         /* ============================================
            2. ANIMACIÓN DE RESPIRACIÓN (IDLE)
            ============================================ */
         @keyframes breathe {
-            0%, 100% {
-                transform: translateY(0) scaleY(1);
-            }
-            50% {
-                transform: translateY(-4px) scaleY(1.015);
-            }
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-4px) scaleY(1.015); }
         }
 
         .char-img,
@@ -74,46 +62,28 @@
         }
 
         /* Delays diferentes para cada personaje */
-        #museum-escriba img,
-        #zone-escriba .char-img {
-            animation-delay: 0s;
-        }
+        .museum-character:nth-child(1) img { animation-delay: 0s; }
+        .museum-character:nth-child(2) img { animation-delay: 0.5s; }
+        .museum-character:nth-child(3) img { animation-delay: 1s; }
 
-        #museum-cleopatra img,
-        #zone-cleopatra .char-img {
-            animation-delay: 0.8s;
-        }
-
-        #museum-campesino img,
-        #zone-campesino .char-img {
-            animation-delay: 1.6s;
-        }
+        #zone-cleopatra .char-img { animation-delay: 0s; }
+        #zone-sacerdote .char-img { animation-delay: 0.4s; }
+        #zone-escriba .char-img { animation-delay: 0.8s; }
+        #zone-soldado .char-img { animation-delay: 1.2s; }
+        #zone-campesino .char-img { animation-delay: 1.6s; }
+        #zone-constructor .char-img { animation-delay: 2s; }
 
         /* ============================================
            3. ANIMACIÓN AL HABLAR (TALKING)
            ============================================ */
         @keyframes talkingBounce {
-            0%, 100% {
-                transform: translateY(0) scaleY(1);
-            }
-            15% {
-                transform: translateY(-12px) scaleY(1.03);
-            }
-            30% {
-                transform: translateY(-3px) scaleY(0.98);
-            }
-            45% {
-                transform: translateY(-10px) scaleY(1.02);
-            }
-            60% {
-                transform: translateY(-2px) scaleY(0.99);
-            }
-            75% {
-                transform: translateY(-8px) scaleY(1.01);
-            }
-            90% {
-                transform: translateY(-1px) scaleY(1);
-            }
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            15% { transform: translateY(-12px) scaleY(1.03); }
+            30% { transform: translateY(-3px) scaleY(0.98); }
+            45% { transform: translateY(-10px) scaleY(1.02); }
+            60% { transform: translateY(-2px) scaleY(0.99); }
+            75% { transform: translateY(-8px) scaleY(1.01); }
+            90% { transform: translateY(-1px) scaleY(1); }
         }
 
         .museum-character img.talking {
@@ -125,14 +95,8 @@
            4. INVENTARIO PALPITANTE (PULSE)
            ============================================ */
         @keyframes inventoryPulse {
-            0%, 100% {
-                transform: scale(1);
-                filter: brightness(1);
-            }
-            50% {
-                transform: scale(1.08);
-                filter: brightness(1.15);
-            }
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.08); filter: brightness(1.15); }
         }
 
         .draggable {
@@ -140,70 +104,43 @@
             transform-origin: center center;
         }
 
-        /* Delays para que no pulsen todos igual */
-        #trigo { animation-delay: 0s; }
-        #pizza { animation-delay: 0.45s; }
-        #corona { animation-delay: 0.9s; }
-        #papiro { animation-delay: 1.35s; }
+        .draggable:nth-child(1) { animation-delay: 0s; }
+        .draggable:nth-child(2) { animation-delay: 0.2s; }
+        .draggable:nth-child(3) { animation-delay: 0.4s; }
+        .draggable:nth-child(4) { animation-delay: 0.6s; }
+        .draggable:nth-child(5) { animation-delay: 0.8s; }
+        .draggable:nth-child(6) { animation-delay: 1s; }
+        .draggable:nth-child(7) { animation-delay: 1.2s; }
+        .draggable:nth-child(8) { animation-delay: 1.4s; }
+        .draggable:nth-child(9) { animation-delay: 1.6s; }
 
-        /* Parar animación al arrastrar */
         .draggable.dragging-active {
             animation: none !important;
             filter: brightness(1.2) drop-shadow(0 10px 25px rgba(0,0,0,0.5)) !important;
         }
 
         /* ============================================
-           5. TRANSICIONES SUAVES (POP-IN ELÁSTICO)
+           5. TRANSICIONES Y ANIMACIONES EXTRAS
            ============================================ */
         @keyframes popInElastic {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) scale(0);
-            }
-            50% {
-                transform: translateX(-50%) scale(1.15);
-            }
-            70% {
-                transform: translateX(-50%) scale(0.95);
-            }
-            85% {
-                transform: translateX(-50%) scale(1.05);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(-50%) scale(1);
-            }
+            0% { opacity: 0; transform: translateX(-50%) scale(0); }
+            50% { transform: translateX(-50%) scale(1.15); }
+            70% { transform: translateX(-50%) scale(0.95); }
+            85% { transform: translateX(-50%) scale(1.05); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1); }
         }
 
         @keyframes popInButton {
-            0% {
-                opacity: 0;
-                transform: scale(0);
-            }
-            50% {
-                transform: scale(1.2);
-            }
-            70% {
-                transform: scale(0.9);
-            }
-            85% {
-                transform: scale(1.08);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0% { opacity: 0; transform: scale(0); }
+            50% { transform: scale(1.2); }
+            70% { transform: scale(0.9); }
+            85% { transform: scale(1.08); }
+            100% { opacity: 1; transform: scale(1); }
         }
 
         @keyframes fadeSlideUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes floatTitle {
@@ -212,32 +149,18 @@
         }
 
         @keyframes buttonGlow {
-            0%, 100% { 
-                box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 0 rgba(255,215,0,0.4); 
-            }
-            50% { 
-                box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 30px 10px rgba(255,215,0,0.3); 
-            }
+            0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 0 rgba(255,215,0,0.4); }
+            50% { box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 30px 10px rgba(255,215,0,0.3); }
         }
 
         @keyframes pulse {
-            0%, 100% { 
-                box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 0 rgba(50,205,50,0.4); 
-            }
-            50% { 
-                box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 25px 8px rgba(50,205,50,0.3); 
-            }
+            0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 0 0 rgba(50,205,50,0.4); }
+            50% { box-shadow: 0 6px 30px rgba(0,0,0,0.4), 0 0 25px 8px rgba(50,205,50,0.3); }
         }
 
         @keyframes tapBounce {
-            0%, 100% { 
-                transform: translateX(-50%) translateY(0) scale(1); 
-                opacity: 1;
-            }
-            50% { 
-                transform: translateX(-50%) translateY(-15px) scale(1.15); 
-                opacity: 0.7;
-            }
+            0%, 100% { transform: translateX(-50%) translateY(0) scale(1); opacity: 1; }
+            50% { transform: translateX(-50%) translateY(-12px) scale(1.15); opacity: 0.7; }
         }
 
         @keyframes checkmarkPop {
@@ -273,7 +196,7 @@
         }
 
         #screen-start h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             animation: floatTitle 3s ease-in-out infinite;
@@ -283,72 +206,115 @@
             background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
             color: #8B4513;
             border: 4px solid #FFF;
-            padding: 20px 60px;
-            font-size: 2.2rem;
+            padding: 18px 50px;
+            font-size: 2rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 30px;
+            margin-top: 25px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.3);
             transition: transform 0.2s;
             animation: buttonGlow 2s ease-in-out infinite;
         }
 
-        #start-btn:active {
-            transform: scale(0.95);
-        }
+        #start-btn:active { transform: scale(0.95); }
 
         .credits {
-            font-size: 0.9rem;
-            margin-top: 30px;
+            font-size: 0.85rem;
+            margin-top: 25px;
             color: #f0e68c;
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
         .version {
             font-size: 0.7rem;
-            margin-top: 15px;
+            margin-top: 12px;
             color: #888;
         }
 
-        /* === PANTALLA MUSEO === */
+        /* =============================================
+           PANTALLA MUSEO - PIRÁMIDE SOCIAL
+           ============================================= */
         #screen-museum {
             background: url('https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo_1.png') center center / cover no-repeat;
             background-color: #f7e6ad;
             justify-content: flex-start;
             align-items: center;
-            padding-top: 20px;
+            padding: 10px 5px;
             overflow: hidden;
         }
 
         .museum-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: #8B4513;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.9);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-align: center;
         }
 
         .museum-subtitle {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #555;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
 
-        .museum-characters {
+        /* Contenedor Pirámide */
+        .pyramid-container {
             display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
-            height: 60%;
-            padding: 0 10px;
+            height: calc(100% - 80px);
+            gap: 5px;
+        }
+
+        .pyramid-level {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* Nivel 1: Faraona (arriba, más grande) */
+        .pyramid-level-1 {
+            height: 38%;
+        }
+        .pyramid-level-1 .museum-character {
+            width: 30%;
+            max-width: 180px;
+        }
+        .pyramid-level-1 .museum-character img {
+            max-height: 90%;
+        }
+
+        /* Nivel 2: Sacerdote y Escriba */
+        .pyramid-level-2 {
+            height: 32%;
+        }
+        .pyramid-level-2 .museum-character {
+            width: 25%;
+            max-width: 140px;
+        }
+        .pyramid-level-2 .museum-character img {
+            max-height: 85%;
+        }
+
+        /* Nivel 3: Soldado, Campesino, Constructor */
+        .pyramid-level-3 {
+            height: 30%;
+        }
+        .pyramid-level-3 .museum-character {
+            width: 22%;
+            max-width: 120px;
+        }
+        .pyramid-level-3 .museum-character img {
+            max-height: 80%;
         }
 
         .museum-character {
             position: relative;
-            width: 30%;
-            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -357,47 +323,45 @@
             transition: filter 0.2s;
         }
 
-        .museum-character:active {
-            filter: brightness(1.1);
-        }
+        .museum-character:active { filter: brightness(1.1); }
 
         .museum-character img {
             max-width: 100%;
-            max-height: 70%;
             object-fit: contain;
             pointer-events: none;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
         }
 
         .museum-character .label {
             background: linear-gradient(180deg, #FFF 0%, #F5E6C8 100%);
-            border: 3px solid #DAA520;
+            border: 2px solid #DAA520;
             color: #8B4513;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 1rem;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
             font-weight: bold;
-            margin-top: 8px;
+            margin-top: 3px;
             pointer-events: none;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            white-space: nowrap;
         }
 
         /* Bocadillo de texto */
         .speech-bubble {
             position: absolute;
-            top: 5%;
+            top: -5px;
             left: 50%;
             transform: translateX(-50%) scale(0);
             background: linear-gradient(180deg, #FFFEF0 0%, #FFF 100%);
-            border: 4px solid #DAA520;
-            border-radius: 25px;
-            padding: 14px 18px;
-            font-size: 0.95rem;
+            border: 3px solid #DAA520;
+            border-radius: 15px;
+            padding: 8px 10px;
+            font-size: 0.7rem;
             color: #333;
             text-align: center;
-            max-width: 95%;
-            min-width: 85%;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+            width: max-content;
+            max-width: 150px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
             opacity: 0;
             visibility: hidden;
             z-index: 100;
@@ -406,20 +370,20 @@
         .speech-bubble::after {
             content: '';
             position: absolute;
-            bottom: -12px;
+            bottom: -8px;
             left: 50%;
             transform: translateX(-50%);
-            border: 10px solid transparent;
+            border: 6px solid transparent;
             border-top-color: #FFF;
         }
 
         .speech-bubble::before {
             content: '';
             position: absolute;
-            bottom: -18px;
+            bottom: -12px;
             left: 50%;
             transform: translateX(-50%);
-            border: 13px solid transparent;
+            border: 8px solid transparent;
             border-top-color: #DAA520;
             z-index: -1;
         }
@@ -430,55 +394,52 @@
             animation: popInElastic 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
 
-        /* Indicador de tócame */
+        /* Indicador tócame */
         .tap-indicator {
             position: absolute;
-            top: 12%;
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 2rem;
+            font-size: 1.2rem;
             animation: tapBounce 1.2s ease-in-out infinite;
-            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
-        .museum-character.visited .tap-indicator {
-            display: none;
-        }
+        .museum-character.visited .tap-indicator { display: none; }
 
-        /* Checkmark para personaje visitado */
         .museum-character.visited::after {
             content: '✓';
             position: absolute;
-            top: 10%;
-            right: 10%;
+            top: 5px;
+            right: 0;
             background: linear-gradient(180deg, #32CD32, #228B22);
             color: white;
-            width: 32px;
-            height: 32px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.3rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.35);
             animation: checkmarkPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
         }
 
         /* Botón A JUGAR */
         #play-game-btn {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 15px;
+            right: 15px;
             background: linear-gradient(180deg, #32CD32 0%, #228B22 100%);
             color: white;
-            border: 4px solid #FFF;
-            padding: 15px 35px;
-            font-size: 1.5rem;
-            border-radius: 30px;
+            border: 3px solid #FFF;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             opacity: 0;
             visibility: hidden;
             z-index: 200;
@@ -497,121 +458,151 @@
             animation: none !important;
         }
 
-        /* === PANTALLA JUEGO === */
+        /* =============================================
+           PANTALLA JUEGO - GRID 2x3
+           ============================================= */
         #screen-game {
             display: none;
         }
 
         #screen-game.active {
-            display: block;
+            display: flex;
+            flex-direction: column;
             animation: fadeSlideUp 0.5s ease-out forwards;
         }
 
+        /* Escenario con Grid 2x3 */
         #game-stage {
-            height: 65%;
+            height: 62%;
             width: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            padding-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 8px;
+            padding: 10px;
         }
 
         .character-zone {
             position: relative;
-            width: 30%;
-            height: 90%;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            border: 2px dashed rgba(0,0,0,0.1);
+            border: 2px dashed rgba(0,0,0,0.15);
             border-radius: 10px;
+            padding: 5px;
             transition: background 0.2s, border 0.2s;
         }
 
-        #zone-cleopatra { width: 35%; z-index: 10; }
-
         .char-img {
-            max-width: 100%;
-            max-height: 85%;
+            max-width: 90%;
+            max-height: 70%;
             object-fit: contain;
             pointer-events: none;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+        }
+
+        .character-zone .label {
+            background: linear-gradient(180deg, #FFF 0%, #F5E6C8 100%);
+            border: 2px solid #DAA520;
+            color: #8B4513;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-top: 3px;
+            pointer-events: none;
+            z-index: 5;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
 
         .fallback-box {
-            width: 100%; height: 80%;
+            width: 80%; height: 60%;
             background: rgba(255, 255, 255, 0.5);
             display: none; 
             justify-content: center; align-items: center;
             text-align: center; font-weight: bold; color: #555;
-            position: absolute; bottom: 40px;
+            font-size: 0.7rem;
+            border-radius: 10px;
         }
 
-        .label {
-            background: linear-gradient(180deg, #FFF 0%, #F5E6C8 100%);
-            border: 3px solid #DAA520;
-            color: #8B4513;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-top: 5px;
-            pointer-events: none;
-            z-index: 5;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-
-        /* Inventario */
+        /* Inventario con Scroll Horizontal */
         #inventory {
-            height: 35%;
-            background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.5) 100%);
+            height: 38%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.55) 100%);
             backdrop-filter: blur(8px);
-            border-top: 5px solid #DAA520;
+            border-top: 4px solid #DAA520;
             display: flex;
-            justify-content: space-evenly;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
             align-items: center;
+            padding: 10px 15px;
+            gap: 12px;
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.15);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Ocultar scrollbar pero mantener funcionalidad */
+        #inventory::-webkit-scrollbar {
+            height: 6px;
+        }
+        #inventory::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 3px;
+        }
+        #inventory::-webkit-scrollbar-thumb {
+            background: #DAA520;
+            border-radius: 3px;
         }
 
         .draggable {
-            width: 18vh;
-            height: 18vh;
+            min-width: 80px;
+            width: 80px;
+            height: 80px;
             cursor: grab;
             object-fit: contain;
             touch-action: none;
             -webkit-touch-callout: none;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.25));
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.25));
+            flex-shrink: 0;
         }
 
         .dragging-active {
             position: fixed !important;
             z-index: 9999 !important;
-            width: 20vh !important;
-            height: 20vh !important;
+            width: 100px !important;
+            height: 100px !important;
+            min-width: unset !important;
             pointer-events: none !important;
         }
 
         .placed-item {
             position: absolute;
             z-index: 20;
-            width: 40%;
+            width: 35%;
+            max-width: 60px;
             animation: popInButton 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
             pointer-events: none;
+            top: 5%;
+            left: 50%;
+            transform: translateX(-50%);
         }
-        
-        #placed-corona { top: 0%; left: 30%; }
-        #placed-papiro { top: 50%; left: 10%; }
-        #placed-trigo { top: 40%; right: 0%; }
 
         .zone-highlight {
             background: rgba(255, 215, 0, 0.35) !important;
             border: 3px solid gold !important;
-            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.3);
+            box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Indicador visual de objeto trampa */
+        .trap-item {
+            border: 2px dashed #ff6b6b;
+            border-radius: 10px;
         }
         
         /* === PANTALLA VICTORIA === */
@@ -623,40 +614,36 @@
         }
 
         #screen-victory h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: #fff;
             text-shadow: 3px 3px 6px #000;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             animation: floatTitle 2s ease-in-out infinite;
         }
 
         #screen-victory button {
-            padding: 18px 45px;
-            font-size: 1.5rem;
-            border-radius: 30px;
-            border: 4px solid white;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border-radius: 25px;
+            border: 3px solid white;
             background: linear-gradient(180deg, #8B4513, #654321);
             color: white;
             cursor: pointer;
             font-weight: bold;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             animation: buttonGlow 2s ease-in-out infinite;
         }
 
-        #screen-victory button:active {
-            transform: scale(0.95);
-        }
+        #screen-victory button:active { transform: scale(0.95); }
 
         /* DEBUG */
         #debug-console {
             position: fixed;
-            bottom: 0;
-            right: 0; 
-            width: 250px;
-            height: 120px; 
+            bottom: 0; right: 0; 
+            width: 200px; height: 100px; 
             background: rgba(0,0,0,0.85);
             color: lime; 
-            font-size: 11px;
+            font-size: 10px;
             overflow-y: scroll; 
             z-index: 10000;
             pointer-events: none;
@@ -669,7 +656,7 @@
 
     <div id="debug-console">Sistema iniciando...<br></div>
 
-    <img id="bg-image" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo.png" onerror="this.style.display='none'; log('Error carga fondo');">
+    <img id="bg-image" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo.png" onerror="this.style.display='none';">
 
     <!-- ========== PANTALLA 1: INICIO ========== -->
     <div id="screen-start" class="screen active">
@@ -679,70 +666,116 @@
             Voces e imágenes creadas por: <strong>Nara Gómez Rivas</strong><br>
             Música de fondo: <strong>Enzo Gómez Rivas</strong>
         </p>
-        <p class="version">v6.0</p>
+        <p class="version">v7.0 - Pirámide Social</p>
     </div>
 
-    <!-- ========== PANTALLA 2: MUSEO ========== -->
+    <!-- ========== PANTALLA 2: MUSEO (PIRÁMIDE) ========== -->
     <div id="screen-museum" class="screen">
-        <h2 class="museum-title">🏛️ El Museo de Egipto 🏛️</h2>
-        <p class="museum-subtitle">¡Toca a los personajes para conocerlos!</p>
+        <h2 class="museum-title">🏛️ La Pirámide Social de Egipto 🏛️</h2>
+        <p class="museum-subtitle">¡Toca a cada personaje para conocerlo!</p>
         
-        <div class="museum-characters">
-            <!-- Escriba -->
-            <div class="museum-character" id="museum-escriba" data-audio="snd-info-escriba" data-text="¡Escribo con dibujos! Son los abuelos de los emojis.">
-                <div class="speech-bubble" id="bubble-escriba"></div>
-                <span class="tap-indicator">👆</span>
-                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" onerror="this.parentElement.innerHTML='<div style=\'background:#ddd;height:60%;display:flex;align-items:center;justify-content:center;\'>ESCRIBA</div>'">
-                <div class="label">Escriba</div>
+        <div class="pyramid-container">
+            <!-- NIVEL 1: Faraona (Arriba) -->
+            <div class="pyramid-level pyramid-level-1">
+                <div class="museum-character" id="museum-cleopatra" data-audio="snd-info-cleopatra" data-text="Soy la última reina... ¡y hablo 7 idiomas!">
+                    <div class="speech-bubble" id="bubble-cleopatra"></div>
+                    <span class="tap-indicator">👆</span>
+                    <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" alt="Cleopatra">
+                    <div class="label">Faraona</div>
+                </div>
             </div>
 
-            <!-- Cleopatra -->
-            <div class="museum-character" id="museum-cleopatra" data-audio="snd-info-cleopatra" data-text="Soy la última reina... ¡y hablo 7 idiomas!">
-                <div class="speech-bubble" id="bubble-cleopatra"></div>
-                <span class="tap-indicator">👆</span>
-                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" onerror="this.parentElement.innerHTML='<div style=\'background:#ddd;height:60%;display:flex;align-items:center;justify-content:center;\'>CLEOPATRA</div>'">
-                <div class="label">Faraona</div>
+            <!-- NIVEL 2: Sacerdote y Escriba -->
+            <div class="pyramid-level pyramid-level-2">
+                <div class="museum-character" id="museum-sacerdote" data-audio="snd-info-sacerdote" data-text="Cuido los templos y hablo con los dioses.">
+                    <div class="speech-bubble" id="bubble-sacerdote"></div>
+                    <span class="tap-indicator">👆</span>
+                    <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/sacerdote.png" alt="Sacerdote">
+                    <div class="label">Sacerdote</div>
+                </div>
+                <div class="museum-character" id="museum-escriba" data-audio="snd-info-escriba" data-text="¡Escribo con dibujos! Son los abuelos de los emojis.">
+                    <div class="speech-bubble" id="bubble-escriba"></div>
+                    <span class="tap-indicator">👆</span>
+                    <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" alt="Escriba">
+                    <div class="label">Escriba</div>
+                </div>
             </div>
 
-            <!-- Campesino -->
-            <div class="museum-character" id="museum-campesino" data-audio="snd-info-campesino" data-text="Gracias al río Nilo planto trigo para el pan.">
-                <div class="speech-bubble" id="bubble-campesino"></div>
-                <span class="tap-indicator">👆</span>
-                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" onerror="this.parentElement.innerHTML='<div style=\'background:#ddd;height:60%;display:flex;align-items:center;justify-content:center;\'>CAMPESINO</div>'">
-                <div class="label">Campesino</div>
+            <!-- NIVEL 3: Soldado, Campesino, Constructor -->
+            <div class="pyramid-level pyramid-level-3">
+                <div class="museum-character" id="museum-soldado" data-audio="snd-info-soldado" data-text="¡Protejo Egipto con mi escudo y mi lanza!">
+                    <div class="speech-bubble" id="bubble-soldado"></div>
+                    <span class="tap-indicator">👆</span>
+                    <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/soldado.png" alt="Soldado">
+                    <div class="label">Soldado</div>
+                </div>
+                <div class="museum-character" id="museum-campesino" data-audio="snd-info-campesino" data-text="Gracias al río Nilo planto trigo para el pan.">
+                    <div class="speech-bubble" id="bubble-campesino"></div>
+                    <span class="tap-indicator">👆</span>
+                    <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" alt="Campesino">
+                    <div class="label">Campesino</div>
+                </div>
+                <div class="museum-character" id="museum-constructor" data-audio="snd-info-constructor" data-text="¡Construyo pirámides con piedras gigantes!">
+                    <div class="speech-bubble" id="bubble-constructor"></div>
+                    <span class="tap-indicator">👆</span>
+                    <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/constructor.png" alt="Constructor">
+                    <div class="label">Constructor</div>
+                </div>
             </div>
         </div>
 
         <button id="play-game-btn">¡A JUGAR! 🎮</button>
     </div>
 
-    <!-- ========== PANTALLA 3: JUEGO ========== -->
+    <!-- ========== PANTALLA 3: JUEGO (GRID 2x3) ========== -->
     <div id="screen-game" class="screen">
         <div id="game-stage">
-            <div class="character-zone" id="zone-escriba" data-need="papiro">
-                <div class="fallback-box">ESCRIBA AQUÍ</div>
-                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" class="char-img" onerror="imgError(this)">
-                <div class="label">Escriba</div>
-            </div>
-
+            <!-- Fila 1 -->
             <div class="character-zone" id="zone-cleopatra" data-need="corona">
-                <div class="fallback-box">CLEOPATRA AQUÍ</div>
+                <div class="fallback-box">FARAONA</div>
                 <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/cleopatra.png" class="char-img" onerror="imgError(this)">
                 <div class="label">Faraona</div>
             </div>
-
+            <div class="character-zone" id="zone-sacerdote" data-need="amuleto">
+                <div class="fallback-box">SACERDOTE</div>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/sacerdote.png" class="char-img" onerror="imgError(this)">
+                <div class="label">Sacerdote</div>
+            </div>
+            <div class="character-zone" id="zone-escriba" data-need="papiro">
+                <div class="fallback-box">ESCRIBA</div>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escriba.png" class="char-img" onerror="imgError(this)">
+                <div class="label">Escriba</div>
+            </div>
+            <!-- Fila 2 -->
+            <div class="character-zone" id="zone-soldado" data-need="escudo">
+                <div class="fallback-box">SOLDADO</div>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/soldado.png" class="char-img" onerror="imgError(this)">
+                <div class="label">Soldado</div>
+            </div>
             <div class="character-zone" id="zone-campesino" data-need="trigo">
-                <div class="fallback-box">CAMPESINO AQUÍ</div>
+                <div class="fallback-box">CAMPESINO</div>
                 <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/campesino.png" class="char-img" onerror="imgError(this)">
                 <div class="label">Campesino</div>
+            </div>
+            <div class="character-zone" id="zone-constructor" data-need="piedra">
+                <div class="fallback-box">CONSTRUCTOR</div>
+                <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/constructor.png" class="char-img" onerror="imgError(this)">
+                <div class="label">Constructor</div>
             </div>
         </div>
 
         <div id="inventory">
-            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/trigo.png" class="draggable" id="trigo" data-item="trigo" onerror="this.style.backgroundColor='red'">
-            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pizza.png" class="draggable" id="pizza" data-item="pizza" onerror="this.style.backgroundColor='red'">
-            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/corona.png" class="draggable" id="corona" data-item="corona" onerror="this.style.backgroundColor='red'">
-            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pergamino.png" class="draggable" id="papiro" data-item="papiro" onerror="this.style.backgroundColor='red'">
+            <!-- 6 Objetos Correctos -->
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/corona.png" class="draggable" id="corona" data-item="corona">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/amuleto.png" class="draggable" id="amuleto" data-item="amuleto">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pergamino.png" class="draggable" id="papiro" data-item="papiro">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/escudo.png" class="draggable" id="escudo" data-item="escudo">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/trigo.png" class="draggable" id="trigo" data-item="trigo">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/piedra.png" class="draggable" id="piedra" data-item="piedra">
+            <!-- 3 Objetos Trampa -->
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/pizza.png" class="draggable trap-item" id="pizza" data-item="pizza" data-trap="true">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/movil.png" class="draggable trap-item" id="movil" data-item="movil" data-trap="true">
+            <img src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/coche.png" class="draggable trap-item" id="coche" data-item="coche" data-trap="true">
         </div>
     </div>
 
@@ -753,17 +786,26 @@
     </div>
 
     <!-- ========== AUDIOS ========== -->
+    <!-- Ambiente -->
     <audio id="snd-bgm" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/musica_fondo.m4a" loop preload="auto"></audio>
     <audio id="snd-intro" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/intro_egipto.m4a" preload="auto"></audio>
-    <audio id="snd-reina" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_cleopatra.m4a" preload="auto"></audio>
-    <audio id="snd-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_escriba.m4a" preload="auto"></audio>
-    <audio id="snd-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_campesino.m4a" preload="auto"></audio>
     <audio id="snd-error" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/error_pizza.m4a" preload="auto"></audio>
     
-    <!-- Audios informativos del museo -->
+    <!-- Info Museo (6 personajes) -->
     <audio id="snd-info-cleopatra" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_cleopatra.m4a" preload="auto"></audio>
+    <audio id="snd-info-sacerdote" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_sacerdote.m4a" preload="auto"></audio>
     <audio id="snd-info-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_escriba.m4a" preload="auto"></audio>
+    <audio id="snd-info-soldado" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_soldado.m4a" preload="auto"></audio>
     <audio id="snd-info-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_campesino.m4a" preload="auto"></audio>
+    <audio id="snd-info-constructor" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_constructor.m4a" preload="auto"></audio>
+    
+    <!-- Aciertos Juego (6 personajes) -->
+    <audio id="snd-acierto-cleopatra" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_cleopatra.m4a" preload="auto"></audio>
+    <audio id="snd-acierto-sacerdote" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_sacerdote.m4a" preload="auto"></audio>
+    <audio id="snd-acierto-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_escriba.m4a" preload="auto"></audio>
+    <audio id="snd-acierto-soldado" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_soldado.m4a" preload="auto"></audio>
+    <audio id="snd-acierto-campesino" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_campesino.m4a" preload="auto"></audio>
+    <audio id="snd-acierto-constructor" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/acierto_constructor.m4a" preload="auto"></audio>
 
     <script>
         // ============ SISTEMA DE LOGS ============
@@ -785,7 +827,6 @@
             image.style.display = "none";
             const fallback = image.parentElement.querySelector('.fallback-box');
             if (fallback) fallback.style.display = "flex";
-            log("Fallo imagen: " + image.src.split('/').pop());
         }
 
         // ============ SISTEMA DE PANTALLAS ============
@@ -802,11 +843,28 @@
 
         // ============ VARIABLES GLOBALES ============
         let itemsPlaced = 0;
-        const totalItems = 3;
+        const totalItems = 6; // ¡Ahora son 6 objetos correctos!
         let charactersVisited = 0;
-        let currentTalkingImg = null; // Referencia a la imagen que está "hablando"
+        let currentTalkingImg = null;
         
-        const infoAudios = ['snd-info-cleopatra', 'snd-info-escriba', 'snd-info-campesino'];
+        // Lista de audios informativos
+        const infoAudios = [
+            'snd-info-cleopatra', 'snd-info-sacerdote', 'snd-info-escriba',
+            'snd-info-soldado', 'snd-info-campesino', 'snd-info-constructor'
+        ];
+
+        // Objetos trampa
+        const trapItems = ['pizza', 'movil', 'coche'];
+
+        // Mapeo de objetos correctos a personajes
+        const correctPairs = {
+            'corona': 'cleopatra',
+            'amuleto': 'sacerdote',
+            'papiro': 'escriba',
+            'escudo': 'soldado',
+            'trigo': 'campesino',
+            'piedra': 'constructor'
+        };
 
         let dragState = {
             active: false,
@@ -870,19 +928,18 @@
                 bubble.classList.add('visible');
             }
             
-            // 5. Añadir clase "talking" a la imagen para que salte
+            // 5. Añadir clase "talking" a la imagen
             if (characterImg) {
                 characterImg.classList.add('talking');
                 currentTalkingImg = characterImg;
             }
             
-            // 6. Reproducir el audio y configurar el evento onended
+            // 6. Reproducir el audio
             const audio = document.getElementById(audioId);
             if (audio) {
                 audio.currentTime = 0;
                 audio.volume = 1.0;
                 
-                // Cuando termine el audio, quitar la clase "talking"
                 audio.onended = function() {
                     if (characterImg) {
                         characterImg.classList.remove('talking');
@@ -890,12 +947,10 @@
                     if (currentTalkingImg === characterImg) {
                         currentTalkingImg = null;
                     }
-                    log("Audio terminado: " + audioId);
                 };
                 
                 audio.play().catch(error => {
-                    log("Audio error (" + audioId + "): " + error.message);
-                    // Si hay error, quitar la clase talking
+                    log("Audio error: " + error.message);
                     if (characterImg) characterImg.classList.remove('talking');
                 });
             }
@@ -904,10 +959,10 @@
             if (!character.classList.contains('visited')) {
                 character.classList.add('visited');
                 charactersVisited++;
-                log("Personajes visitados: " + charactersVisited);
+                log("Visitados: " + charactersVisited + "/6");
             }
             
-            // 8. Mostrar botón "A JUGAR" después del primer personaje
+            // 8. Mostrar botón "A JUGAR"
             if (charactersVisited >= 1) {
                 document.getElementById('play-game-btn').classList.add('visible');
             }
@@ -919,11 +974,10 @@
                 if (audio) {
                     audio.pause();
                     audio.currentTime = 0;
-                    audio.onended = null; // Limpiar el listener
+                    audio.onended = null;
                 }
             });
             
-            // Quitar clase talking de cualquier imagen
             if (currentTalkingImg) {
                 currentTalkingImg.classList.remove('talking');
                 currentTalkingImg = null;
@@ -942,7 +996,7 @@
             showScreen('screen-game');
             initDraggables();
             
-            log("Iniciando juego");
+            log("Iniciando juego - " + totalItems + " objetos a colocar");
         });
 
         // ============ PANTALLA JUEGO (DRAG & DROP) ============
@@ -974,7 +1028,7 @@
             dragState.element = target;
             dragState.itemId = target.id;
             
-            const dragSize = Math.min(window.innerHeight * 0.20, 150);
+            const dragSize = 100;
             dragState.offsetX = dragSize / 2;
             dragState.offsetY = dragSize / 2;
             
@@ -982,7 +1036,7 @@
             target.classList.add('dragging-active');
             updateDragPosition(point.clientX, point.clientY);
             
-            log("Drag start: " + dragState.itemId);
+            log("Drag: " + dragState.itemId);
         }
 
         function onDragMove(e) {
@@ -1019,8 +1073,6 @@
             const x = point.clientX;
             const y = point.clientY;
             
-            log("Drag end at: " + Math.round(x) + "," + Math.round(y));
-            
             zones.forEach(z => z.classList.remove('zone-highlight'));
             
             let droppedZone = null;
@@ -1046,28 +1098,34 @@
         }
 
         function handleDrop(zone) {
-            const needed = zone.dataset.need;
+            const zoneId = zone.id.replace('zone-', '');
             const itemId = dragState.itemId;
             const element = dragState.element;
             
-            log("Drop: " + itemId + " en zona que necesita: " + needed);
+            log("Drop: " + itemId + " → " + zoneId);
 
-            if (itemId === 'pizza') {
+            // Verificar si es un objeto trampa
+            if (trapItems.includes(itemId)) {
+                log("¡TRAMPA! " + itemId);
                 playAudio('snd-error');
                 shakeAndReset(element);
-            } else if (itemId === needed) {
-                placeItem(zone, element, itemId);
+                return;
+            }
+
+            // Verificar si es el par correcto
+            if (correctPairs[itemId] === zoneId) {
+                placeItem(zone, element, itemId, zoneId);
             } else {
+                // Objeto incorrecto para esta zona
                 resetDrag();
             }
         }
 
-        function placeItem(zone, element, itemId) {
-            if (itemId === 'corona') playAudio('snd-reina');
-            if (itemId === 'papiro') playAudio('snd-escriba');
-            if (itemId === 'trigo') playAudio('snd-campesino');
+        function placeItem(zone, element, itemId, zoneId) {
+            // Reproducir audio de acierto correspondiente
+            playAudio('snd-acierto-' + zoneId);
 
-            element.classList.remove('draggable', 'dragging-active');
+            element.classList.remove('draggable', 'dragging-active', 'trap-item');
             element.classList.add('placed-item');
             element.id = 'placed-' + itemId;
             
@@ -1077,12 +1135,13 @@
             element.style.zIndex = '';
             element.style.width = '';
             element.style.height = '';
+            element.style.minWidth = '';
             element.style.filter = '';
             
             zone.appendChild(element);
             
             itemsPlaced++;
-            log("Items colocados: " + itemsPlaced + "/" + totalItems);
+            log("Colocados: " + itemsPlaced + "/" + totalItems);
             
             if (itemsPlaced === totalItems) {
                 setTimeout(() => {
@@ -1107,29 +1166,33 @@
             element.style.zIndex = '';
             element.style.width = '';
             element.style.height = '';
+            element.style.minWidth = '';
             element.style.filter = '';
             
             inventory.appendChild(element);
-            log("Reset: " + dragState.itemId);
         }
 
         function shakeAndReset(element) {
             element.style.transition = 'transform 0.1s';
-            element.style.transform = 'translateX(-15px)';
+            element.style.transform = 'translateX(-20px) rotate(-5deg)';
             
             setTimeout(() => {
-                element.style.transform = 'translateX(15px)';
+                element.style.transform = 'translateX(20px) rotate(5deg)';
             }, 100);
             
             setTimeout(() => {
-                element.style.transform = 'translateX(-10px)';
+                element.style.transform = 'translateX(-15px) rotate(-3deg)';
             }, 200);
+            
+            setTimeout(() => {
+                element.style.transform = 'translateX(15px) rotate(3deg)';
+            }, 300);
             
             setTimeout(() => {
                 element.style.transform = '';
                 element.style.transition = '';
                 resetDrag();
-            }, 300);
+            }, 400);
         }
 
         // ============ UTILIDADES DE AUDIO ============
@@ -1144,13 +1207,13 @@
             
             snd.currentTime = 0;
             snd.play().catch(error => {
-                log("Audio error (" + id + "): " + error.message);
+                log("Audio error: " + error.message);
             });
         }
 
         // ============ INICIALIZACIÓN ============
         document.addEventListener('DOMContentLoaded', () => {
-            log("Sistema listo v6.0 - Animado");
+            log("Sistema v7.0 - Pirámide Social");
         });
     </script>
 </body>
