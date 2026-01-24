@@ -233,41 +233,32 @@
         }
 
         /* =============================================
-           PANTALLA MUSEO - PIRÁMIDE SOCIAL
+           PANTALLA MUSEO - 2 FILAS OPTIMIZADAS
            ============================================= */
         #screen-museum {
             background: url('https://raw.githubusercontent.com/gaxupin/egipto-nara/main/fondo_1.png') center center / cover no-repeat;
             background-color: #f7e6ad;
             justify-content: flex-start;
             align-items: center;
-            padding: 10px 5px;
+            padding: 8px 5px 5px 5px;
             overflow: hidden;
         }
 
         .museum-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #8B4513;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.9);
-            margin-bottom: 3px;
+            margin: 0 0 2px 0;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .museum-subtitle {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #555;
-            margin-bottom: 8px;
+            margin: 0 0 5px 0;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
-        }
-
-        @media (orientation: landscape) {
-            .museum-title {
-                font-size: 1.6rem;
-                margin-bottom: 2px;
-            }
-            .museum-subtitle {
-                font-size: 0.9rem;
-                margin-bottom: 5px;
-            }
+            flex-shrink: 0;
         }
 
         /* Contenedor Pirámide - 2 FILAS */
@@ -275,94 +266,32 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: flex-end;
             width: 100%;
-            height: calc(100% - 60px);
-            gap: 5px;
-            padding: 0 5px;
+            flex: 1;
+            gap: 3px;
+            padding: 0 2%;
+            overflow: hidden;
         }
 
         .pyramid-level {
             display: flex;
-            justify-content: space-evenly;
+            justify-content: center;
             align-items: flex-end;
             width: 100%;
-            padding: 0 3%;
+            flex-shrink: 0;
         }
 
-        /* Nivel 1: Sacerdote - CLEOPATRA - Escriba */
+        /* FILA 1: Sacerdote - CLEOPATRA - Escriba */
         .pyramid-level-1 {
-            height: 52%;
-        }
-        .pyramid-level-1 .museum-character {
-            width: 28%;
-            max-width: 200px;
-        }
-        .pyramid-level-1 .museum-character img {
-            max-height: 88%;
-        }
-        /* Cleopatra más grande (es el del medio) */
-        .pyramid-level-1 .museum-character:nth-child(2) {
-            width: 32%;
-            max-width: 240px;
-            z-index: 10;
-        }
-        .pyramid-level-1 .museum-character:nth-child(2) img {
-            max-height: 95%;
+            height: 48%;
+            gap: 2%;
         }
 
-        /* Nivel 2: Soldado - Campesino - Constructor */
+        /* FILA 2: Soldado - Campesino - Constructor */
         .pyramid-level-2 {
             height: 48%;
-        }
-        .pyramid-level-2 .museum-character {
-            width: 28%;
-            max-width: 180px;
-        }
-        .pyramid-level-2 .museum-character img {
-            max-height: 85%;
-        }
-
-        /* ===== MODO LANDSCAPE (Horizontal) ===== */
-        @media (orientation: landscape) {
-            .pyramid-container {
-                justify-content: flex-end;
-                padding-bottom: 5px;
-                gap: 8px;
-            }
-
-            .pyramid-level {
-                padding: 0 5%;
-            }
-
-            /* Nivel 1 en landscape */
-            .pyramid-level-1 {
-                height: 55%;
-            }
-            .pyramid-level-1 .museum-character {
-                width: 22%;
-                max-width: 220px;
-            }
-            .pyramid-level-1 .museum-character:nth-child(2) {
-                width: 26%;
-                max-width: 260px;
-            }
-
-            /* Nivel 2 en landscape */
-            .pyramid-level-2 {
-                height: 45%;
-            }
-            .pyramid-level-2 .museum-character {
-                width: 22%;
-                max-width: 200px;
-            }
-        }
-
-        /* ===== PANTALLAS MUY ANCHAS ===== */
-        @media (min-width: 900px) and (orientation: landscape) {
-            .pyramid-level {
-                padding: 0 10%;
-            }
+            gap: 2%;
         }
 
         .museum-character {
@@ -373,12 +302,14 @@
             align-items: center;
             cursor: pointer;
             transition: filter 0.2s;
+            height: 100%;
         }
 
         .museum-character:active { filter: brightness(1.1); }
 
         .museum-character img {
             max-width: 100%;
+            max-height: calc(100% - 28px); /* Espacio para la etiqueta */
             object-fit: contain;
             pointer-events: none;
             filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
@@ -388,44 +319,80 @@
             background: linear-gradient(180deg, #FFF 0%, #F5E6C8 100%);
             border: 2px solid #DAA520;
             color: #8B4513;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.65rem;
             font-weight: bold;
-            margin-top: 3px;
+            margin-top: 2px;
             pointer-events: none;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* === TAMAÑOS ESPECÍFICOS POR PERSONAJE === */
+        
+        /* Fila 1 */
+        /* Sacerdote - vertical alto */
+        #museum-sacerdote {
+            width: 25%;
+            max-width: 160px;
+        }
+        
+        /* Cleopatra - cuadrada, más grande (protagonista) */
+        #museum-cleopatra {
+            width: 30%;
+            max-width: 200px;
+            z-index: 10;
+        }
+        
+        /* Escriba - MUY horizontal (sentado) - necesita más ancho */
+        #museum-escriba {
+            width: 32%;
+            max-width: 220px;
+        }
+        #museum-escriba img {
+            max-height: calc(100% - 28px);
+        }
+
+        /* Fila 2 */
+        /* Soldado - vertical */
+        #museum-soldado {
+            width: 24%;
+            max-width: 150px;
+        }
+        
+        /* Campesino - vertical mediano */
+        #museum-campesino {
+            width: 22%;
+            max-width: 140px;
+        }
+        
+        /* Constructor - vertical con piedra grande */
+        #museum-constructor {
+            width: 26%;
+            max-width: 160px;
         }
 
         /* Bocadillo de texto */
         .speech-bubble {
             position: absolute;
-            top: -10px;
+            top: 0;
             left: 50%;
             transform: translateX(-50%) scale(0);
             background: linear-gradient(180deg, #FFFEF0 0%, #FFF 100%);
             border: 3px solid #DAA520;
             border-radius: 15px;
-            padding: 8px 12px;
-            font-size: 0.75rem;
+            padding: 6px 10px;
+            font-size: 0.65rem;
             color: #333;
             text-align: center;
             width: max-content;
-            max-width: 180px;
+            max-width: 140px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.25);
             opacity: 0;
             visibility: hidden;
             z-index: 100;
-        }
-
-        @media (orientation: landscape) {
-            .speech-bubble {
-                top: -15px;
-                max-width: 200px;
-                font-size: 0.8rem;
-                padding: 10px 14px;
-            }
         }
 
         .speech-bubble::after {
@@ -458,10 +425,10 @@
         /* Indicador tócame */
         .tap-indicator {
             position: absolute;
-            top: 0;
+            top: 5px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             animation: tapBounce 1.2s ease-in-out infinite;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
@@ -472,16 +439,16 @@
             content: '✓';
             position: absolute;
             top: 5px;
-            right: 0;
+            right: 5px;
             background: linear-gradient(180deg, #32CD32, #228B22);
             color: white;
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: bold;
             box-shadow: 0 2px 8px rgba(0,0,0,0.35);
             animation: checkmarkPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
@@ -490,14 +457,14 @@
         /* Botón A JUGAR */
         #play-game-btn {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
+            bottom: 10px;
+            right: 10px;
             background: linear-gradient(180deg, #32CD32 0%, #228B22 100%);
             color: white;
             border: 3px solid #FFF;
-            padding: 12px 25px;
-            font-size: 1.2rem;
-            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -517,6 +484,88 @@
         #play-game-btn:active {
             transform: scale(0.95) !important;
             animation: none !important;
+        }
+
+        /* ===== MODO LANDSCAPE (Horizontal) ===== */
+        @media (orientation: landscape) {
+            .museum-title {
+                font-size: 1.5rem;
+            }
+            
+            .museum-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .pyramid-container {
+                padding: 0 3%;
+                gap: 5px;
+            }
+
+            .pyramid-level-1,
+            .pyramid-level-2 {
+                height: 47%;
+                gap: 3%;
+            }
+
+            .museum-character .label {
+                font-size: 0.7rem;
+                padding: 3px 10px;
+            }
+
+            /* Ajustes landscape por personaje */
+            #museum-sacerdote {
+                width: 18%;
+                max-width: 180px;
+            }
+            
+            #museum-cleopatra {
+                width: 22%;
+                max-width: 220px;
+            }
+            
+            #museum-escriba {
+                width: 26%;
+                max-width: 260px;
+            }
+
+            #museum-soldado {
+                width: 18%;
+                max-width: 170px;
+            }
+            
+            #museum-campesino {
+                width: 16%;
+                max-width: 150px;
+            }
+            
+            #museum-constructor {
+                width: 20%;
+                max-width: 180px;
+            }
+
+            .speech-bubble {
+                font-size: 0.75rem;
+                max-width: 180px;
+                padding: 8px 12px;
+            }
+
+            #play-game-btn {
+                padding: 12px 25px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* ===== TABLETS GRANDES EN LANDSCAPE ===== */
+        @media (min-width: 900px) and (orientation: landscape) {
+            .pyramid-level-1,
+            .pyramid-level-2 {
+                gap: 5%;
+            }
+
+            .museum-character .label {
+                font-size: 0.8rem;
+                padding: 4px 12px;
+            }
         }
 
         /* =============================================
