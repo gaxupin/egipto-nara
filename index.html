@@ -1128,6 +1128,7 @@
     <audio id="snd-error-coche" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/error_coche.m4a" preload="auto"></audio>
     
     <!-- Info Museo (6 personajes) -->
+    <audio id="snd-intro-museo" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/intro_museo.m4a" preload="auto"></audio>
     <audio id="snd-info-cleopatra" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_cleopatra.m4a" preload="auto"></audio>
     <audio id="snd-info-sacerdote" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_sacerdote.m4a" preload="auto"></audio>
     <audio id="snd-info-escriba" src="https://raw.githubusercontent.com/gaxupin/egipto-nara/main/info_escriba.m4a" preload="auto"></audio>
@@ -1216,12 +1217,13 @@
         document.getElementById('start-btn').addEventListener('click', () => {
             const bgm = document.getElementById('snd-bgm');
             if (bgm) {
-                bgm.volume = 0.2;
+                bgm.volume = 0.1; // Volumen bajo para no tapar voces
                 bgm.currentTime = 0;
                 bgm.play().catch(e => log("BGM error: " + e.message));
             }
             showScreen('screen-museum');
-            log("Música iniciada, entrando al museo");
+            playAudio('snd-intro-museo'); // Audio explicativo del museo
+            log("Música iniciada (vol 0.1), intro museo reproduciéndose");
         });
 
         // ============ PANTALLA MUSEO ============
