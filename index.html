@@ -595,6 +595,28 @@
             animation: fadeSlideUp 0.5s ease-out forwards;
         }
 
+        /* Header del juego con título */
+        .game-header {
+            text-align: center;
+            padding: 5px 10px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .game-title {
+            font-size: 1.2rem;
+            color: #8B4513;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+        }
+
+        .game-subtitle {
+            font-size: 0.85rem;
+            color: #654321;
+            margin: 2px 0 0 0;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+        }
+
         /* Escenario con Grid 2x3 */
         #game-stage {
             width: 100%;
@@ -732,11 +754,25 @@
         @media (orientation: landscape) {
             #screen-game.active {
                 flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            .game-header {
+                width: 100%;
+                padding: 3px 10px;
+            }
+
+            .game-title {
+                font-size: 1.1rem;
+            }
+
+            .game-subtitle {
+                font-size: 0.75rem;
             }
 
             #game-stage {
                 width: 70%;
-                height: 100%;
+                height: calc(100% - 45px);
                 flex: none;
                 gap: 6px;
                 padding: 6px;
@@ -753,7 +789,7 @@
 
             #inventory {
                 width: 30%;
-                height: 100%;
+                height: calc(100% - 45px);
                 min-height: unset;
                 max-height: unset;
                 flex-direction: column;
@@ -856,16 +892,29 @@
                 flex-direction: column;
             }
 
+            .game-header {
+                padding: 8px 10px;
+            }
+
+            .game-title {
+                font-size: 1.3rem;
+            }
+
+            .game-subtitle {
+                font-size: 0.9rem;
+            }
+
             #game-stage {
-                height: 60%;
+                height: 55%;
                 width: 100%;
                 flex: none;
             }
 
             #inventory {
-                height: 40%;
+                height: auto;
+                flex: 1;
                 width: 100%;
-                min-height: 120px;
+                min-height: 100px;
                 max-height: none;
                 flex-direction: row;
                 border-left: none;
@@ -955,7 +1004,7 @@
 
     <!-- ========== PANTALLA 2: MUSEO (PIRÁMIDE) ========== -->
     <div id="screen-museum" class="screen">
-        <h2 class="museum-title">🏛️ La Pirámide Social de Egipto 🏛️</h2>
+        <h2 class="museum-title">🏛️ Conoce a la Sociedad Egipcia 🏛️</h2>
         <p class="museum-subtitle">¡Toca a cada personaje para conocerlo!</p>
         
         <div class="pyramid-container">
@@ -1009,6 +1058,10 @@
 
     <!-- ========== PANTALLA 3: JUEGO (GRID 2x3) ========== -->
     <div id="screen-game" class="screen">
+        <div class="game-header">
+            <h2 class="game-title">🏺 Misión: Organizar Egipto 🏺</h2>
+            <p class="game-subtitle">¡Devuelve cada tesoro a su dueño!</p>
+        </div>
         <div id="game-stage">
             <!-- Fila 1 -->
             <div class="character-zone" id="zone-cleopatra" data-need="corona">
